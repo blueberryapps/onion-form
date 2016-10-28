@@ -7,7 +7,7 @@ import { clearFormProperty, setMultipleFields } from './actions';
 export default class Form extends Component {
 
   static propTypes = {
-    children: RPT.object.isRequired,
+    children: RPT.oneOfType([RPT.node, RPT.arrayOf(RPT.node)]).isRequired,
     name: RPT.string.isRequired,
     onSubmit: RPT.func,
     validations: RPT.object

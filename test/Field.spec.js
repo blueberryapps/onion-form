@@ -28,7 +28,7 @@ global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
 
 describe('Field', () => {
-  function createStub(customProps = {}) {
+  function createStub(customProps = {}, Input) {
     const container = TestUtils.renderIntoDocument(
       <ReduxProvider store={store}>
         <Form name="fooForm">
@@ -37,10 +37,10 @@ describe('Field', () => {
       </ReduxProvider>
     );
 
-    return TestUtils.findRenderedComponentWithType(container, BasicInput);
+    return TestUtils.findRenderedComponentWithType(container, Input);
   }
 
-  const stub = createStub({});
+  const stub = createStub({}, BasicInput);
 
   it('input should have name prop', () => {
     assert.equal(stub.props.name, 'firstName');
@@ -60,5 +60,22 @@ describe('Field', () => {
 
   it('input should have customProperty prop', () => {
     assert.equal(stub.props.customProperty, 'Hi Hello From State');
+  });
+
+  describe('with custom Component', () => {
+    const FooInput = () => (<div className="FooInput" />);
+
+    it('should render it', () => {
+      const fooContainer = TestUtils.renderIntoDocument(
+        <ReduxProvider store={store}>
+          <Form name="fooForm">
+            <Field name="firstName" component={FooInput} />
+            <FooInput />
+          </Form>
+        </ReduxProvider>
+      );
+
+      TestUtils.scryRenderedDOMComponentsWithClass(fooContainer, 'FooInput');
+    });
   });
 });

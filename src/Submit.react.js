@@ -3,7 +3,7 @@ import React, { Component, PropTypes as RPT } from 'react';
 export default class Submit extends Component {
 
   static propTypes = {
-    children: RPT.object.isRequired,
+    children: RPT.oneOfType([RPT.node, RPT.string]).isRequired,
     disabled: RPT.bool.isRequired,
     onClick: RPT.func.isRequired,
   }
