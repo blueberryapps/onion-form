@@ -18,7 +18,7 @@ import { Form, Field, Submit } from 'onion-form';
 
 <Form
   name="signIn"
-  validations={{ email: () => ((value && !value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) ? 'wrongFormat' : null) }}
+  validations={{ email: (value) => [((value && !value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) ? 'wrongFormat' : null)] }}
   onSubmit={({ values }) => { console.log(values) }}
 >
   <Field name='email' type='email' />
