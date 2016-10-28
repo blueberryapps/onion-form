@@ -1,0 +1,6 @@
+coverage
+test
+.babelrc
+.gitignore
+.npmignore
+gulpfile.babel.js

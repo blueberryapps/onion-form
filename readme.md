@@ -1,11 +1,12 @@
-![Onion Form](https://github.com/blueberryapps/4finance-packages/raw/e673eadf594c2c8cd981c6057301528de74be439/packages/onion-form/onion-form.png)
+![Onion Form](https://raw.githubusercontent.com/blueberryapps/onion-form/master/onion-form.png)
+[![CircleCI](https://circleci.com/gh/blueberryapps/onion-form.svg?style=svg&circle-token=354f9bfd4c09ed529e4ff20019fc6668d03d9aa1)](https://circleci.com/gh/blueberryapps/onion-form)
 
 > As a developer you are assigned with creating a registration form on Registration page
 > with fields for first name, last name, e-mail and password, validate them and then
 > send all these fields to API. Not again? This package will make your life easier by simplifying the dealing with forms.
 
 ```
-npm install --save @blueberry/4finance-onion-form
+yarn add --save onion-form
 ```
 
 This package is only meant to be used together with Redux!
@@ -13,7 +14,7 @@ This package is only meant to be used together with Redux!
 ## TLDR
 
 ```javascript
-import { Form, Field, Submit } from '@blueberry/4finance-onion-form';
+import { Form, Field, Submit } from 'onion-form';
 
 <Form
   name="signIn"
@@ -31,9 +32,9 @@ import { Form, Field, Submit } from '@blueberry/4finance-onion-form';
 ```javascript
 // Registration.react.js
 import React, { Component } from 'react';
-import { Form, Submit, connectField } from '@blueberry/4finance-onion-form';
+import { Form, Submit, connectField } from 'onion-form';
 
-// For validations look at 4finance-validations
+// validations
 const isRequired = (value) => ((!value) ? 'required' : null);
 const emailNeedsToContainName = (_, otherValues) => ((!otherValues.email || otherValues.email.indexOf(otherValues.name) === -1) ? 'invalidEmail' : null);
 const needLetters = (value) => (value && !value.match(/[a-zA-Z]+/i ? 'needLetters' : null);
@@ -85,7 +86,7 @@ export default class RegistrationPage extends Component {
 ```javascript
 // store.js
 import { createStore, combineReducers } from 'redux';
-import { reducer as onionForm } from '@blueberry/4finance-onion-form';
+import { reducer as onionForm } from 'onion-form';
 
 const store = createStore(combineReducers({ onionForm }), {})
 ```
@@ -108,7 +109,7 @@ which returns all the actions with `formName` set.
 __DEFAULT_PROPS__:
 can be a plain __{}__ or a function which receives props as
 the first parameter and needs to return __{}__. This function gets resolves in render on every rerender.
-`(props) => ({ label: props.msg('key.to.label') })` **this uses 4finance-translate**
+`(props) => ({ label: props.msg('key.to.label') })`
 
 __FIELD_VALUES_FROM_STATE__:
 By default we store these values in redux state:
@@ -143,7 +144,7 @@ You can use `connectSubmit` which will pass `onClick` and `disabled` as prop to 
 
 ```js
 // CustomSubmit.react.js
-import { connectSubmit } from '@blueberry/4finance-onion-form';
+import { connectSubmit } from 'onion-form';
 
 const Button = ({ children, disabled, onClick }) => (
   <button disabled={disabled} onClick={onClick} type="submit">{children}</button>
@@ -152,35 +153,7 @@ const Button = ({ children, disabled, onClick }) => (
 export default const connectSubmit(Button);
 ```
 
-## Translate
-
-There is a ready-to-use integration for 4finance-translate:
-
-```javascript
-import translate from '@blueberry/4finance-translate';
-import { connectField } from '@blueberry/4finance-onion-form';
-
-const FirstName = translate(connectField('firstName')(BasicInput));
-```
-
-`msg` function is passed by wrapping the connected field in `translate`.
-We use this function to resolve translations for the
-`error`, `hint`, `label`, `tooltip` props.
-
-__error__ is specific because we are trying to get text by:
-```javascript
-const error = field.error || field.apiError;
-const errorText = error
-  ? msg([`form.${formName}.errors.${error}`, `form.errors.${error}`, `errors.${error}`])
-  : '';
-```
-
-others are easier, for example __label__:
-```javascript
-const labelText = label || defaultProps.label || msg([`form.${formName}.${fieldName}.label`, `form.${fieldName}.label`, `${fieldName}.label`]);
-```
-
-# !For detailed documentation of all options do `npm run test`!
+# !For detailed documentation of all options do `yarn test`!
 
 ## NPM Commands
 * __npm run test__: runs mocha tests
