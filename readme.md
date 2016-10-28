@@ -155,7 +155,7 @@ export default const connectSubmit(Button);
 
 # !For detailed documentation of all options do `yarn test`!
 
-## NPM Commands
-* __npm run test__: runs mocha tests
-* __npm run test:watch__: runs mocha test with watch option
-* __npm run coverage__: create code coverage report
+## Commands
+* __yarn test__: runs mocha tests
+* __yarn test:watch__: runs mocha test with watch option
+* __yarn coverage__: create code coverage report
