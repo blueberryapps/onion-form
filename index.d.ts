@@ -71,7 +71,7 @@ export interface SubmitProps {
 declare class Submit extends React.Component<SubmitProps, any> {
 }
 
-export function connectField(fieldName: string, props?: Values, validations?: Validation[]): React.ReactElement<any>;
+export function connectField(fieldName: string, props?: Values, validations?: Validation[]): any;
 
 export function connectSubmit(Submit: any): any;
 
