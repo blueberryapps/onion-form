@@ -4,6 +4,7 @@ export default function createContextExtractor(name) {
   return (Field) => {
     class FormFieldWrapper extends Component {
       static contextTypes = {
+        onionFieldRegister: RPT.func.isRequired,
         onionFormName: RPT.string.isRequired,
         onionLiveValidate: RPT.func.isRequired,
         onionOnSubmit: RPT.func.isRequired
@@ -12,11 +13,12 @@ export default function createContextExtractor(name) {
       static displayName = `Form${name}ContextExtractor`;
 
       render() {
-        const { onionFormName, onionLiveValidate, onionOnSubmit } = this.context;
+        const { onionFormName, onionFieldRegister, onionLiveValidate, onionOnSubmit } = this.context;
 
         return (
           <Field
             {...this.props}
+            onionFieldRegister={onionFieldRegister}
             onionFormName={onionFormName}
             onionLiveValidate={onionLiveValidate}
             onionOnSubmit={onionOnSubmit}

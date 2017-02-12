@@ -1,10 +1,10 @@
-import createFormActions from './actions';
 import createContextExtractor from './createContextExtractor';
+import createFormActions from './actions';
 import React, { Component, PropTypes as RPT } from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default function connectField(fieldName, defaultProps = {}) {
+export default function connectField(fieldName, defaultProps = {}, customValidations = []) {
   return FieldComponent => {
     @connect(
       (state, { onionFormName }) => ({
@@ -17,20 +17,32 @@ export default function connectField(fieldName, defaultProps = {}) {
     class Field extends Component {
       static propTypes = {
         actions: RPT.object,
+        dispatch: RPT.func,
         field: RPT.object,
+        hint: RPT.string, // custom
+        label: RPT.string, // custom
+        msg: RPT.func, // custom -> given by translate() decorator #finance-translate
+        onBlur: RPT.func, // custom
+        onChange: RPT.func, // custom
+        onFocus: RPT.func, // custom
+        onionFieldRegister: RPT.func.isRequired,
         onionFormName: RPT.string.isRequired,
         onionLiveValidate: RPT.func.isRequired,
-        dispatch: RPT.func,
-        msg: RPT.func, // custom -> given by translate() decorator #finance-translate
-        label: RPT.string, // custom
-        onBlur: RPT.func, // custom
-        onFocus: RPT.func, // custom
-        onChange: RPT.func, // custom
         tooltip: RPT.string, // custom
-        hint: RPT.string, // custom
+        validations: RPT.array
       }
 
       static displayName = `Form${fieldName}Field`;
+
+      componentDidMount() {
+        const { onionFieldRegister } = this.props;
+        onionFieldRegister(fieldName, this);
+      }
+
+      componentWillUnmount() {
+        const { onionFieldRegister } = this.props;
+        onionFieldRegister(fieldName, null);
+      }
 
       onBlur() {
         const { onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
@@ -73,6 +85,10 @@ export default function connectField(fieldName, defaultProps = {}) {
       getFieldProps() {
         const { field } = this.props;
         return field ? field.toJS() : {};
+      }
+
+      validations() {
+        return customValidations;
       }
 
       msg(key) {

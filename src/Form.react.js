@@ -7,8 +7,10 @@ import { clearFormProperty, setMultipleFields } from './actions';
 export default class Form extends Component {
 
   static propTypes = {
-    children: RPT.oneOfType([RPT.node, RPT.arrayOf(RPT.node)]).isRequired,
+    children: RPT.oneOfType([RPT.node, RPT.string, RPT.arrayOf(RPT.node)]).isRequired,
+    method: RPT.string,
     name: RPT.string.isRequired,
+    onError: RPT.func,
     onSubmit: RPT.func,
     validations: RPT.object
   }
@@ -18,17 +20,20 @@ export default class Form extends Component {
   }
 
   static childContextTypes = {
+    onionFieldRegister: RPT.func.isRequired,
     onionFormName: RPT.string.isRequired,
     onionLiveValidate: RPT.func.isRequired,
     onionOnSubmit: RPT.func.isRequired,
   }
 
-  defaultProps = {
+  static defaultProps = {
+    method: 'POST',
     validations: {}
   }
 
   getChildContext() {
     return {
+      onionFieldRegister: this.fieldRegister.bind(this),
       onionFormName: this.props.name,
       onionLiveValidate: this.liveValidate.bind(this),
       onionOnSubmit: this.onSubmit.bind(this)
@@ -40,8 +45,10 @@ export default class Form extends Component {
     return this._submit();
   }
 
+  fields = {}
+
   liveValidate() {
-    const { validations, name } = this.props;
+    const { name } = this.props;
     const { store: { getState } } = this.context;
 
     const liveValidationsEnabled = extractPropertyFromState(
@@ -50,27 +57,26 @@ export default class Form extends Component {
       'liveValidation'
     );
 
-    const liveValidations = Object.keys(liveValidationsEnabled).reduce(
-      (acc, field) => (
-        liveValidationsEnabled[field]
-          ? { ...acc, [field]: validations[field] }
-          : acc
-      ),
-      {}
-    );
+    const fieldsToValidate = Object.keys(this.fields)
+      .filter(fieldName => liveValidationsEnabled[fieldName]);
 
-    return this.validate(liveValidations);
+    return this.validate(fieldsToValidate);
+  }
+
+  fieldRegister(fieldName, field) {
+    if (field)
+      this.fields[fieldName] = field;
+    else
+      delete this.fields[fieldName];
   }
 
   formValidate() {
-    const { validations } = this.props;
+    this._enableAllFieldsLiveValidation();
 
-    this._enableAllFiledsLiveValidation();
-
-    return this.validate(validations);
+    return this.validate(this._allFieldNames());
   }
 
-  validate(enabledValidations) {
+  validate(fieldsToValidate) {
     const { name } = this.props;
     const { store: { dispatch } } = this.context;
 
@@ -78,25 +84,25 @@ export default class Form extends Component {
       setMultipleFields(
         name,
         'error',
-        this._getValidationErrors(enabledValidations)
+        this._getValidationErrors(fieldsToValidate)
       )
     );
   }
 
   _submit() {
-    const { name, onSubmit } = this.props;
+    const { name, onError, onSubmit } = this.props;
     const values = this._getValues();
+    const errors = this._getErrors();
 
     // check for validation errors
-    if (!this._isValid())
+    if (!this._isValid()) {
+      if (typeof onError === 'function')
+        onError({ name, errors });
       return false;
+    }
 
     if (typeof onSubmit === 'function')
-      onSubmit({
-        name,
-        values
-      });
-
+      onSubmit({ name, values });
     return true;
   }
 
@@ -120,6 +126,13 @@ export default class Form extends Component {
     return hasErrors(getState(), name);
   }
 
+  _getErrors() {
+    const { name } = this.props;
+    const { store: { getState } } = this.context;
+
+    return extractPropertyFromState(getState(), name, 'error');
+  }
+
   _getValues() {
     const { name } = this.props;
     const { store: { getState } } = this.context;
@@ -127,27 +140,34 @@ export default class Form extends Component {
     return extractPropertyFromState(getState(), name, 'value');
   }
 
-  _getValidationErrors(enabledValidations) {
-    const values = this._getValues();
+  _extractValidationsFromField(fieldName) {
+    const field = this.fields[fieldName];
+    const { validations } = this.props;
+    if (!field || typeof field.validations !== 'function' || !field.props) return validations[fieldName] || [];
 
-    return Object.keys(enabledValidations).reduce( // this will create { field1: null, field2: 'required', ...}
-      (acc, field) => ({
-        ...acc,
-        [field]: validateField(values[field], enabledValidations[field], values)
-      }),
-      {}
-    );
+    return (validations[fieldName] || []) // 1. validations from form level <Form validations={{'name': [isRequired()]}} />
+      .concat(field.validations() || []) // 2. add validations from createField level createField('name', {}, [isRequired()])
+      .concat(field.props.validations || []); // 3. add validations from instance level <Field validations=[isRequired()] />
   }
 
-  _enableAllFiledsLiveValidation() {
-    const { name, validations } = this.props;
+  _getValidationErrors(fieldsToValidate) {
+    const values = this._getValues();
+
+    return fieldsToValidate.reduce((acc, fieldName) => ({
+      ...acc,
+      [fieldName]: validateField(values[fieldName], this._extractValidationsFromField(fieldName), values)
+    }), {});
+  }
+
+  _enableAllFieldsLiveValidation() {
+    const { name } = this.props;
     const { store: { dispatch } } = this.context;
 
     return dispatch(
       setMultipleFields(
         name,
         'liveValidation',
-        Object.keys(validations).reduce( // this will create { field1: true, field2: true, ...}
+        this._allFieldNames().reduce( // this will create { field1: true, field2: true, ...}
           (acc, field) => ({ ...acc, [field]: true }),
           {}
         )
@@ -155,11 +175,16 @@ export default class Form extends Component {
     );
   }
 
+  _allFieldNames() {
+    const { validations } = this.props;
+    return Object.keys(this.fields).concat(Object.keys(validations));
+  }
+
   render() {
-    const { children } = this.props;
+    const { children, method } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit.bind(this)}>
+      <form onSubmit={this.onSubmit.bind(this)} method={method} >
         {children}
       </form>
     );

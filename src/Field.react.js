@@ -4,8 +4,8 @@ import React, { Component, PropTypes as RPT } from 'react';
 export default class Field extends Component {
 
   static propTypes = {
-    name:  RPT.string.isRequired,
-    component: RPT.object
+    component: RPT.object,
+    name: RPT.string.isRequired
   }
 
   render() {

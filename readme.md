@@ -18,8 +18,9 @@ import { Form, Field, Submit } from 'onion-form';
 
 <Form
   name="signIn"
-  validations={{ email: (value) => [((value && !value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) ? 'wrongFormat' : null)] }}
+  onError={({ errors }) => { console.log(errors) }}
   onSubmit={({ values }) => { console.log(values) }}
+  validations={{ email: (value) => [((value && !value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) ? 'wrongFormat' : null)]}}
 >
   <Field name='email' type='email' />
   <Field name='password' type='password' />
@@ -62,11 +63,21 @@ export default class RegistrationPage extends Component {
     // apiCall('POST', { firstName, lastName, email, password })
   }
 
+  onError({ errors: { firstName, lastName, email, password } }) {
+    // alert, show flash message what ever you need to do when use tryies to
+    // submit form and gets validation errors
+  }
+
   render() {
     return (
       <div>
         <h1>Registration</h1>
-        <Form name="myRegistrationForm" onSubmit={this.onSubmit.bind(this)} validations={validations}>
+        <Form
+          name="myRegistrationForm"
+          onSubmit={this.onSubmit.bind(this)}
+          onError={this.onError.bind(this)}
+          validations={validations}
+        >
           <FirstName label="Your first name" />
           <LastName />
           <Email />
@@ -78,6 +89,29 @@ export default class RegistrationPage extends Component {
   }
 }
 ```
+
+### Validations
+There are three ways how you can add validations to your form:
+
+1. Pass an object with validations to the `Form` component as props (see examples above)
+2. Pass an array of validations to the `connectField` function: `connectField('password', null, [isRequired(), password()])`
+3. Specify the validations when the field component is being used:
+
+```js
+export default class MyForm extends Component {
+  render() {
+    return (
+      <Form name="myForm">
+        <Email validations={[isRequired(), email()]} />
+        <Password validations={[isRequired(), password()]}/>
+        <Submit>Login</Submit>
+      </Form>
+    )
+  }
+}
+```
+
+All validations you specify will be used.
 
 ### Redux
 
@@ -151,6 +185,32 @@ const Button = ({ children, disabled, onClick }) => (
 );
 
 export default const connectSubmit(Button);
+```
+
+## Translations
+
+You need to pass to component function `msg('keypath') => string`.
+
+Implemetation is your thing but it needs to follow:
+```
+msg('key.foo') // returns translation for key.foo
+msg(['foo', 'bar']) // returns translation for foo if exists else bar
+```
+
+We use this function to resolve translations for the
+`error`, `hint`, `label`, `tooltip` props.
+
+__error__ is specific because we are trying to get text by:
+```javascript
+const error = field.error || field.apiError;
+const errorText = error
+  ? msg([`form.${formName}.errors.${error}`, `form.errors.${error}`, `errors.${error}`])
+  : '';
+```
+
+others are easier, for example __label__:
+```javascript
+const labelText = label || defaultProps.label || msg([`form.${formName}.${fieldName}.label`, `form.${fieldName}.label`, `${fieldName}.label`]);
 ```
 
 # !For detailed documentation of all options do `yarn test`!

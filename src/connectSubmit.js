@@ -1,13 +1,19 @@
 import createContextExtractor from './createContextExtractor';
+import hasApiErrors from './hasApiErrors';
 import hasErrors from './hasErrors';
 import { connect } from 'react-redux';
 
 export default function connectSubmit(Submit) {
   return createContextExtractor('Submit')(
     connect(
-      (state, { disabled, onionFormName }) => ({
-        disabled: hasErrors(state, onionFormName) || !!disabled
-      }),
+      (state, { disabled, onionFormName }) => {
+        const anyValidationErrors = hasErrors(state, onionFormName);
+        const anyApiErrors = hasApiErrors(state, onionFormName);
+        return {
+          disabled: anyValidationErrors || !!disabled,
+          hasErrors: anyValidationErrors || anyApiErrors
+        };
+      },
       (state, { onClick, onionOnSubmit }) => ({
         onClick: (event) => (onionOnSubmit(event) && typeof onClick === 'function' && onClick(event))
       })
