@@ -14,7 +14,6 @@ export connectSubmit from './connectSubmit';
 // Helpers
 export extractPropertyFromState from './extractPropertyFromState';
 export extractPropertyFromFields from './extractPropertyFromFields';
-export scrollToError from './scrollToError';
 export validateField from './validateField';
 
 export default from './connectField';
