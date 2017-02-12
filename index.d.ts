@@ -3,12 +3,31 @@ import * as React from "react";
 import * as Immutable from "immutable";
 
 export type InitialState = {
-  fields: Immutable.Map;
+  fields: Immutable.Map<string, Immutable.Map<string, Immutable.Map<string, any>>>;
 };
 
 export type Values = {[key: string]: any};
 
 export type Validation = (value: any, otherValues?: Values) => (string | null);
+
+export type OnChangeEvent = (event: {target: { name: string, value: any}}) => void;
+export type OnFormEvent = (event: {target: { name: string}}) => void;
+export type OnionFormChangeEvent = (v: {name: string, value: any}) => void;
+
+export interface InputProps {
+  name: string;
+  onChange: OnionFormChangeEvent | OnChangeEvent | any;
+  onionFormName: string;
+  value: any;
+  liveValidation: boolean;
+  apiError: string | null;
+  error?: string | null;
+  hint?: string | null;
+  label?: string | null;
+  onBlur?: OnFormEvent | any;
+  onFocus?: OnFormEvent | any;
+  tooltip?: string | null;
+}
 
 export type Action = {
   type: string;
@@ -27,21 +46,11 @@ export interface FieldProps {
 export class Field extends React.Component<FieldProps, any> {
 }
 
-export interface ErrorCallbackObject {
-  name: string;
-  errors: {[key: string]: any};
-}
-
-export interface SubmitCallbackObject {
-  name: string;
-  values: {[key: string]: any};
-}
-
 export interface FormProps {
   method?: "POST" | "GET" | "PUT" | "DELETE";
   name: String | string;
-  onError?: (e: ErrorCallbackObject) => void;
-  onSubmit?: (s: SubmitCallbackObject) => void;
+  onError?: (e: {name: string, errors: {[key: string]: any}}) => void;
+  onSubmit?: (s: {name: string, values: {[key: string]: any}}) => void;
   validations?: {[key: string]: Validation[]};
 }
 
@@ -55,14 +64,14 @@ declare class Form extends React.Component<FormProps, any> {
 }
 
 export interface SubmitProps {
-  disabled: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }
 
 declare class Submit extends React.Component<SubmitProps, any> {
 }
 
-export function connectField(fieldName: string, defaultProps?: Values, customValidations?: Validation[]): any;
+export function connectField(fieldName: string, props?: Values, validations?: Validation[]): React.ReactElement<any>;
 
 export function connectSubmit(Submit: any): any;
 
