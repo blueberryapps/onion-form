@@ -7,26 +7,31 @@ export type InitialState = {
 };
 
 export type Values = {[key: string]: any};
-
-export type Validation = (value: any, otherValues?: Values) => (string | null);
+export type Error = string;
+export type Valid = null;
+export type Validation = (value: any, otherValues?: Values) => (Error | Valid);
 
 export type OnChangeEvent = (event: {target: { name: string, value: any}}) => void;
 export type OnFormEvent = (event: {target: { name: string}}) => void;
 export type OnionFormChangeEvent = (v: {name: string, value: any}) => void;
 
-export interface InputProps {
+export interface PossibleOverrideProps {
+  error?: string | null;
+  hint?: string | null;
+  label?: string | null;
+  onChange?: OnFormEvent | any;
+  onBlur?: OnFormEvent | any;
+  onFocus?: OnFormEvent | any;
+  tooltip?: string | null;
+}
+
+export interface InputProps extends PossibleOverrideProps{
   name: string;
   onChange: OnionFormChangeEvent | OnChangeEvent | any;
   onionFormName: string;
   value: any;
   liveValidation: boolean;
   apiError: string | null;
-  error?: string | null;
-  hint?: string | null;
-  label?: string | null;
-  onBlur?: OnFormEvent | any;
-  onFocus?: OnFormEvent | any;
-  tooltip?: string | null;
 }
 
 export type Action = {
@@ -71,7 +76,13 @@ export interface SubmitProps {
 declare class Submit extends React.Component<SubmitProps, any> {
 }
 
-export function connectField(fieldName: string, props?: Values, validations?: Validation[]): any;
+type ComponentClass<P> = React.ComponentClass<P>;
+type StatelessComponent<P> = React.StatelessComponent<P>;
+interface ComponentDecorator<P> {
+    (component: ComponentClass<P> | StatelessComponent<P>): ComponentClass<P>;
+}
+
+export function connectField(fieldName: string, defaultProps?: (Values & PossibleOverrideProps), customValidations?: Validation[]): ComponentDecorator<PossibleOverrideProps>;
 
 export function connectSubmit(Submit: any): any;
 
