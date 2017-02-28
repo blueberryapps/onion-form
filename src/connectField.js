@@ -108,7 +108,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       render() {
-        const { onionFormName, label, tooltip, hint } = this.props;
+        const { onionFormName, label, tooltip, hint, ...rest } = this.props;
         const field = this.getFieldProps();
         const error = field.error || field.apiError;
 
@@ -116,6 +116,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
 
         return (
           <FieldComponent
+            {...rest}
             {...defaultProps}
             {...this.getFieldProps()}
             error={error && this.msg(`errors.${error}`, error) || error}
