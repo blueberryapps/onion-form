@@ -2,6 +2,7 @@
 export Form from './Form.react';
 export Field from './Field.react';
 export Submit from './Submit.react';
+export Button from './Button.react';
 
 // Redux
 export * as actions from './actions';

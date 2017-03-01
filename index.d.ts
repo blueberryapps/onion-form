@@ -25,7 +25,7 @@ export interface PossibleOverrideProps {
   tooltip?: string | null;
 }
 
-export interface InputProps extends PossibleOverrideProps{
+export interface InputProps extends PossibleOverrideProps {
   name: string;
   onChange: OnionFormChangeEvent | OnChangeEvent | any;
   onionFormName: string;
@@ -70,10 +70,20 @@ declare class Form extends React.Component<FormProps, any> {
 
 export interface SubmitProps {
   disabled?: boolean;
-  onClick: () => void;
+  hasErrors?: boolean;
+  onClick?: () => void;
 }
 
 declare class Submit extends React.Component<SubmitProps, any> {
+}
+
+export interface ButtonProps {
+  disabled?: boolean;
+  children: React.ReactChildren;
+  onClick: () => void;
+}
+
+declare class Button extends React.Component<ButtonProps, any> {
 }
 
 type ComponentClass<P> = React.ComponentClass<P>;

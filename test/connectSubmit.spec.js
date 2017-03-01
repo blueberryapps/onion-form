@@ -4,7 +4,7 @@ import connectSubmit from '../src/connectSubmit';
 import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
-import Submit from '../src/Submit.react';
+import Button from '../src/Button.react';
 import TestUtils from 'react-addons-test-utils';
 import { assert } from 'chai';
 import { createStore } from 'redux';
@@ -28,7 +28,7 @@ const store = createStore(() => ({ onionForm: reducer(initial) }));
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
 
-const OnionSubmit = connectSubmit(Submit);
+const OnionSubmit = connectSubmit(Button);
 
 describe('connectSubmit()', () => {
   function createSubmit(customProps = {}) {
@@ -40,7 +40,7 @@ describe('connectSubmit()', () => {
       </ReduxProvider>
     );
 
-    return TestUtils.findRenderedComponentWithType(container, Submit);
+    return TestUtils.findRenderedComponentWithType(container, Button);
   }
 
   const submit = createSubmit({});
