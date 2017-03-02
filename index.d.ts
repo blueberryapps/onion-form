@@ -94,7 +94,7 @@ interface ComponentDecorator<P> {
 
 export function connectField<P>(fieldName: string, defaultProps?: (Values & PossibleOverrideProps), customValidations?: Validation[]): ComponentDecorator<P & PossibleOverrideProps>;
 
-export function connectSubmit<P>(component: ComponentClass<P> | StatelessComponent<P>): ComponentClass<P>;
+export function connectSubmit(Submit: any): any;
 
 export function extractPropertyFromFields(fields: any, property: string): any;
 
