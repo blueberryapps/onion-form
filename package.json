@@ -1,6 +1,6 @@
 {
   "name": "onion-form",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "onion-form",
   "typings": "index",
   "main": "lib/index.js",

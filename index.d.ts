@@ -88,8 +88,10 @@ declare class Button extends React.Component<ButtonProps, any> {
 
 type ComponentClass<P> = React.ComponentClass<P>;
 type StatelessComponent<P> = React.StatelessComponent<P>;
+type PureComponent<P> = React.PureComponent<P, void>;
+
 interface ComponentDecorator<P> {
-    (component: ComponentClass<P> | StatelessComponent<P>): ComponentClass<P>;
+    (component: ComponentClass<P> | StatelessComponent<P> | PureComponent<P> | any): ComponentClass<P>;
 }
 
 export function connectField<P>(fieldName: string, defaultProps?: (Values & PossibleOverrideProps), customValidations?: Validation[]): ComponentDecorator<P & PossibleOverrideProps>;
