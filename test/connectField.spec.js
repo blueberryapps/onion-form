@@ -51,6 +51,7 @@ describe('connectField()', () => {
   }
 
   const FirstName = connectField('firstName', { customOverrideProp: 'Overriden props' })(TextField);
+  const LastName = connectField('lastName', { customOverrideProp: 'Overriden props' })(TextField);
   const AcceptAgreement = connectField('acceptAgreement', { customOverrideProp: 'Overriden props' })(CheckBox);
 
   function createStubs(customProps = {}) {
@@ -58,18 +59,21 @@ describe('connectField()', () => {
       <ReduxProvider store={store}>
         <Form name="fooForm">
           <FirstName {...customProps} />
+          <LastName />
           <AcceptAgreement {...customProps} />
         </Form>
       </ReduxProvider>
     );
 
+    const fields = TestUtils.scryRenderedComponentsWithType(container, TextField);
     return {
-      textField: TestUtils.findRenderedComponentWithType(container, TextField),
+      textField: fields[0],
+      lastNameField: fields[1],
       checkBox: TestUtils.findRenderedComponentWithType(container, CheckBox)
     };
   }
 
-  const { textField, checkBox } = createStubs({});
+  const { textField, lastNameField, checkBox } = createStubs({});
 
   it('Text Field should have name prop', () => {
     assert.equal(textField.props.name, 'firstName');
@@ -77,6 +81,10 @@ describe('connectField()', () => {
 
   it('Text Field should have value prop', () => {
     assert.equal(textField.props.value, 'Bar');
+  });
+
+  it('Text Field should have empty value when state has NULL', () => {
+    assert.equal(lastNameField.props.value, '');
   });
 
   describe('Custom props', () => {
