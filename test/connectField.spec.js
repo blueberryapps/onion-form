@@ -116,6 +116,20 @@ describe('connectField()', () => {
       );
     });
 
+    it('Checkbox should pass value prop set on connected field without overriding it', () => {
+      assert.equal(
+        createStubs({ value: true }).checkBox.props.value,
+        true
+      );
+    });
+
+    it('Text Field should pass value prop set on connected field without overriding it', () => {
+      assert.equal(
+        createStubs({ value: 'unoverridable' }).textField.props.value,
+        'unoverridable'
+      );
+    });
+
     it('Text Field decorated with translate (msg given) should have hint translated', () => {
       assert.equal(
         createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.props.hint,
