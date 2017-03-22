@@ -12,3 +12,10 @@ test:
   override:
     - yarn eslint
     - yarn test
+
+deployment:
+  create_release_branch:
+    branch:
+      - master
+    commands:
+      - ./publish
