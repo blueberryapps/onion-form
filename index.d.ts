@@ -22,6 +22,7 @@ export interface PossibleOverrideProps {
   onChange?: OnFormEvent | any;
   onBlur?: OnFormEvent | any;
   onFocus?: OnFormEvent | any;
+  placeholder?: string | null;
   tooltip?: string | null;
 }
 

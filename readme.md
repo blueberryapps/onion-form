@@ -198,7 +198,7 @@ msg(['foo', 'bar']) // returns translation for foo if exists else bar
 ```
 
 We use this function to resolve translations for the
-`error`, `hint`, `label`, `tooltip` props.
+`error`, `hint`, `label`, `tooltip`, `placeholder` props.
 
 __error__ is specific because we are trying to get text by:
 ```javascript

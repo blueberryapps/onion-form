@@ -28,6 +28,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         onionFieldRegister: RPT.func.isRequired,
         onionFormName: RPT.string.isRequired,
         onionLiveValidate: RPT.func.isRequired,
+        placeholder: RPT.string, // custom
         tooltip: RPT.string, // custom
         validations: RPT.array
       }
@@ -108,7 +109,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       render() {
-        const { onionFormName, label, tooltip, hint, ...rest } = this.props;
+        const { onionFormName, label, tooltip, hint, placeholder, ...rest } = this.props;
         const field = this.getFieldProps();
         const error = field.error || field.apiError;
 
@@ -124,6 +125,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
             error={error && this.msg(`errors.${error}`, error) || error}
             hint={hint || defaultProps.hint || this.msg(`${fieldName}.hint`)}
             label={label || defaultProps.label || this.msg(`${fieldName}.label`)}
+            placeholder={placeholder || defaultProps.placeholder || this.msg(`${fieldName}.placeholder`)}
             name={fieldName}
             onBlur={this.onBlur.bind(this)}
             onChange={this.onChange.bind(this)}
