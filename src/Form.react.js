@@ -16,6 +16,7 @@ export default class Form extends Component {
   }
 
   static contextTypes = {
+    onionFormName: RPT.string,
     store: RPT.object.isRequired
   }
 
@@ -182,11 +183,14 @@ export default class Form extends Component {
 
   render() {
     const { children, method } = this.props;
+    const { onionFormName } = this.context;
+    const props = {
+      method,
+      onSubmit: this.onSubmit.bind(this)
+    };
 
-    return (
-      <form onSubmit={this.onSubmit.bind(this)} method={method} >
-        {children}
-      </form>
-    );
+    return onionFormName ?
+      <div>{children}</div> :
+      <form {...props}>{children}</form>;
   }
 }
