@@ -71,6 +71,7 @@ declare class Form extends React.Component<FormProps, any> {
 
 export interface SubmitProps {
   disabled?: boolean;
+  valid?: boolean;
   hasErrors?: boolean;
   onClick?: () => void;
 }
@@ -127,6 +128,8 @@ export namespace actions {
     function setFormFieldProperty(form: string, field: string, property: string, value: any): Action;
 
     function setMultipleFields(form: string, property: string, values: Values): Action;
+
+    function setFormValidity(form: string, valid: boolean): { type: string, form: string, valid: boolean };
 
 }
 

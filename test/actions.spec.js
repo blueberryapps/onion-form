@@ -102,4 +102,15 @@ describe('actions', () => {
       }
     );
   });
+
+  it('setFormValidity()', () => {
+    assert.deepEqual(
+      actions.setFormValidity('registrationForm', true),
+      {
+        type: actions.SET_FORM_VALIDITY,
+        form: 'registrationForm',
+        valid: true
+      }
+    );
+  });
 });

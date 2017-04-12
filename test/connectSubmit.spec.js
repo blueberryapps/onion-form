@@ -18,7 +18,8 @@ const initial = {
         customProperty: 'Hi Hello From State',
         value: 'Bar',
         error: null
-      }
+      },
+      '__valid?': true
     }
   }
 };
@@ -59,5 +60,9 @@ describe('connectSubmit()', () => {
 
   it('should override disabled in prop by customProp', () => {
     assert.isTrue(createSubmit({ disabled: true }).props.disabled);
+  });
+
+  it('should have valid in prop', () => {
+    assert.isTrue(submit.props.valid);
   });
 });

@@ -2,7 +2,7 @@ import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
 import React, { Component, PropTypes as RPT } from 'react';
 import validateField from './validateField';
-import { clearFormProperty, setMultipleFields } from './actions';
+import { clearFormProperty, setMultipleFields, setFormValidity } from './actions';
 
 export default class Form extends Component {
 
@@ -45,7 +45,21 @@ export default class Form extends Component {
     return this._submit();
   }
 
-  fields = {}
+  setFormValidity() {
+    const { name } = this.props;
+    const { store: { dispatch } } = this.context;
+
+    dispatch(setFormValidity(name, this._getValidationErrors(this._allFieldNames())));
+  }
+
+  fieldRegister(fieldName, field) {
+    if (field)
+      this.fields[fieldName] = field;
+    else
+      delete this.fields[fieldName];
+
+    this.setFormValidity();
+  }
 
   liveValidate() {
     const { name } = this.props;
@@ -63,12 +77,7 @@ export default class Form extends Component {
     return this.validate(fieldsToValidate);
   }
 
-  fieldRegister(fieldName, field) {
-    if (field)
-      this.fields[fieldName] = field;
-    else
-      delete this.fields[fieldName];
-  }
+  fields = {}
 
   formValidate() {
     this._enableAllFieldsLiveValidation();
@@ -79,6 +88,8 @@ export default class Form extends Component {
   validate(fieldsToValidate) {
     const { name } = this.props;
     const { store: { dispatch } } = this.context;
+
+    this.setFormValidity();
 
     return dispatch(
       setMultipleFields(
