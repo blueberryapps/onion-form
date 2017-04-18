@@ -45,6 +45,14 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         onionFieldRegister(name, this);
       }
 
+      componentWillReceiveProps(next) {
+        const { name, onionFieldRegister } = this.props;
+        if (name !== next.name) {
+          onionFieldRegister(name, null);
+          onionFieldRegister(next.name, this);
+        }
+      }
+
       componentWillUnmount() {
         const { name, onionFieldRegister } = this.props;
         onionFieldRegister(name, null);
