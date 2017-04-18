@@ -176,7 +176,7 @@ You can pass `defaultValue` to component by (PROPS or __DEFAULT_PROPS__) to set 
 
 ## connectSubmit(DECORATED_COMPONENT)
 
-You can use `connectSubmit` which will pass `onClick`, `isValid`, `hasValues`, `hasErrors` and `disabled` as prop to the decorated component:
+You can use `connectSubmit` which will pass `onClick`, `valid`, `hasValues`, `hasErrors` and `disabled` as prop to the decorated component:
 
 ```js
 // CustomSubmit.react.js
@@ -190,7 +190,7 @@ export default const connectSubmit(Button);
 ```
 
 - `onClick`: callback function for submitting form
-- `isValid`: returns true/false based on fields validations runned against state (errors doesn't need to be in store)
+- `valid`: returns true/false based on fields validations runned against state (errors doesn't need to be in store)
 - `hasErrors`: returns true if form is invalid (based on state from Redux)
 
 ## Translations

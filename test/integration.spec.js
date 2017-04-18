@@ -40,33 +40,33 @@ describe('Integration', () => {
     return TestUtils.findRenderedComponentWithType(container, Button);
   }
 
-  it('should have isValid true when no validations', () => {
+  it('should have valid true when no validations', () => {
     const submit = createSubmit();
-    assert.isTrue(submit.props.isValid);
+    assert.isTrue(submit.props.valid);
   });
 
-  it('should have isValid true when all fields are valid (one field)', () => {
+  it('should have valid true when all fields are valid (one field)', () => {
     const submit = createSubmit({ name: { value: 'John' } }, { name: [isRequired] });
-    assert.isTrue(submit.props.isValid);
+    assert.isTrue(submit.props.valid);
   });
 
-  it('should have isValid true when all fields are valid (two fields)', () => {
+  it('should have valid true when all fields are valid (two fields)', () => {
     const submit = createSubmit({ name: { value: 'John' }, accept: { value: true } }, { name: [isRequired], accept: [isRequired] });
-    assert.isTrue(submit.props.isValid);
+    assert.isTrue(submit.props.valid);
   });
 
-  it('should have isValid false when all fields are not valid (invalid value)', () => {
+  it('should have valid false when all fields are not valid (invalid value)', () => {
     const submit = createSubmit({ name: { value: 'John' }, accept: { value: false } }, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.isValid);
+    assert.isFalse(submit.props.valid);
   });
 
-  it('should have isValid false when all fields are not valid (missing value in state)', () => {
+  it('should have valid false when all fields are not valid (missing value in state)', () => {
     const submit = createSubmit({ name: { value: '' } }, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.isValid);
+    assert.isFalse(submit.props.valid);
   });
 
-  it('should have isValid false when all fields are not valid (missing all values)', () => {
+  it('should have valid false when all fields are not valid (missing all values)', () => {
     const submit = createSubmit({}, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.isValid);
+    assert.isFalse(submit.props.valid);
   });
 });

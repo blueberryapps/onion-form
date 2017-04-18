@@ -15,7 +15,7 @@ export default function connectSubmit(Submit) {
         return {
           disabled: anyValidationErrors || !!disabled,
           hasErrors: anyValidationErrors || anyApiErrors,
-          isValid: onionIsValid(),
+          valid: onionIsValid(),
           hasValues: anyValues
         };
       },
