@@ -40,6 +40,14 @@ export default function translationReducer(inputState = initialState, action = {
   const state = !(inputState instanceof InitialState) ? revive(inputState) : inputState;
 
   switch (action.type) {
+    case actions.REGISTER_ONION_FORM_FIELD: {
+      const { form, field } = action;
+      if (Map.isMap(state.getIn(['fields', form, field]))) {
+        return state;
+      }
+      return state.setIn(['fields', form, field], deafultFieldProperties);
+    }
+
     case actions.SET_ONION_FORM_FIELD_PROPERTY: {
       const { form, field, property, value } = action;
       return state.setIn(['fields', form, field, property], value);

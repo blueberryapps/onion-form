@@ -23,7 +23,7 @@ const initial = {
   }
 };
 
-const store = createStore(() => ({ onionForm: reducer(initial) }));
+const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
 
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;

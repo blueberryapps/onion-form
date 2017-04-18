@@ -16,16 +16,17 @@ import { TextField, CheckBox } from './mocks';
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
 
-const isRequired = (value) => ((!value) ? 'required' : null);
+const isRequired = (value) => ((value && `${value}`.length > 0) ? null : 'required');
 
 const Name = connectField('name', { customOverrideProp: 'Overriden props' })(TextField);
 const Accept = connectField('accept', { customOverrideProp: 'Overriden props' })(CheckBox);
 
 const OnionSubmit = connectSubmit(Button);
 
-describe('connectSubmit()', () => {
+describe('Integration', () => {
   function createSubmit(fooForm = {}, validations = {}) {
-    const store = createStore(() => ({ onionForm: reducer({ fields: { fooForm } }) }));
+    const store = createStore((state = { onionForm: { fields: { fooForm } } }, action) => ({ onionForm: reducer(state.onionForm, action) }));
+
     const container = TestUtils.renderIntoDocument(
       <ReduxProvider store={store}>
         <Form name="fooForm">
@@ -44,27 +45,27 @@ describe('connectSubmit()', () => {
     assert.isTrue(submit.props.isValid);
   });
 
-  it('should have isValid true when all fields are valid', () => {
-    const submit = createSubmit({name: {value: 'John'}}, { name: [isRequired] });
+  it('should have isValid true when all fields are valid (one field)', () => {
+    const submit = createSubmit({ name: { value: 'John' } }, { name: [isRequired] });
     assert.isTrue(submit.props.isValid);
   });
 
-  it('should have isValid true when all fields are valid', () => {
-    const submit = createSubmit({name: {value: 'John'}, accept: {value: true}}, { name: [isRequired], accept: [isRequired] });
+  it('should have isValid true when all fields are valid (two fields)', () => {
+    const submit = createSubmit({ name: { value: 'John' }, accept: { value: true } }, { name: [isRequired], accept: [isRequired] });
     assert.isTrue(submit.props.isValid);
   });
 
-  it('should have isValid false when all fields are not valid', () => {
-    const submit = createSubmit({name: {value: 'John'}, accept: {value: false}}, { name: [isRequired], accept: [isRequired] });
+  it('should have isValid false when all fields are not valid (invalid value)', () => {
+    const submit = createSubmit({ name: { value: 'John' }, accept: { value: false } }, { name: [isRequired], accept: [isRequired] });
     assert.isFalse(submit.props.isValid);
   });
 
-  it('should have isValid false when all fields are not valid', () => {
-    const submit = createSubmit({accept: {value: false}}, { name: [isRequired], accept: [isRequired] });
+  it('should have isValid false when all fields are not valid (missing value in state)', () => {
+    const submit = createSubmit({ name: { value: '' } }, { name: [isRequired], accept: [isRequired] });
     assert.isFalse(submit.props.isValid);
   });
 
-  it('should have isValid false when all fields are not valid', () => {
+  it('should have isValid false when all fields are not valid (missing all values)', () => {
     const submit = createSubmit({}, { name: [isRequired], accept: [isRequired] });
     assert.isFalse(submit.props.isValid);
   });

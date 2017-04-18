@@ -166,11 +166,13 @@ __ONION_PROPS:__
 When you initialize a component in `render` you can pass the following PASSED_PROPS:
 
 __PASSED_PROPS__
-`label`, `onBlur`, `onFocus`, `onChange`, `tooltip`, `hint`
+`label`, `onBlur`, `onFocus`, `onChange`, `tooltip`, `hint`, `defaultValue`
 They will be transferred to the decorated component.
 Functions passed by props (`onFocus`, `onChange`, `onBlur`) will get called too, after onion form callbacks.
 
 Passing order of props is: __DEFAULT_PROPS__ -> __FIELD_VALUES_FROM_STATE__ -> __ONION_PROPS__ -> __PASSED_PROPS__
+
+You can pass `defaultValue` to component by (PROPS or __DEFAULT_PROPS__) to set that value to state on componentDid mount when field has no value already set.
 
 ## connectSubmit(DECORATED_COMPONENT)
 

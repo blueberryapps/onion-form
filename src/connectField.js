@@ -18,6 +18,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       static propTypes = {
         actions: RPT.object,
         dispatch: RPT.func,
+        defaultValue: RPT.string,
         field: RPT.object,
         hint: RPT.string, // custom
         label: RPT.string, // custom
@@ -41,11 +42,9 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       static displayName = `Form${fieldName}Field`;
 
       componentDidMount() {
-        const { name, actions: { setFieldValue }, onionFieldRegister } = this.props;
-        const fieldProps = this.getFieldProps();
-
+        const { name, onionFieldRegister } = this.props;
         onionFieldRegister(name, this);
-        setFieldValue(name, fieldProps.value);
+        this._setDefaultValue(this.props);
       }
 
       componentWillReceiveProps(next) {
@@ -53,6 +52,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         if (name !== next.name) {
           onionFieldRegister(name, null);
           onionFieldRegister(next.name, this);
+          this._setDefaultValue(next);
         }
       }
 
@@ -62,9 +62,11 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       onBlur() {
-        const { name, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
+        const { name, field: { liveValidation }, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
 
-        const result = setFieldLiveValidation(name, true);
+        // if live validation is not already set, set it now
+        if (!liveValidation)
+          setFieldLiveValidation(name, true);
 
         // call passed callback
         if (typeof onBlur === 'function')
@@ -73,7 +75,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         if (typeof onionLiveValidate === 'function')
           onionLiveValidate();
 
-        return result;
+        return true;
       }
 
       onFocus() {
@@ -99,8 +101,8 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         return result;
       }
 
-      getFieldProps() {
-        const { field } = this.props;
+      getFieldProps(props = this.props) {
+        const { field } = props;
         return field ? field.toJS() : {};
       }
 
@@ -122,6 +124,20 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
           return defaultProps(this.props) || {};
 
         return defaultProps;
+      }
+
+      _setDefaultValue(props) {
+        const fieldProps = this.getFieldProps(props);
+
+        // Enable to set default value only if value is undefined
+        if (typeof fieldProps.value !== 'undefined') {
+          return;
+        }
+
+        const defaultValueToSet = props.defaultValue || defaultProps.defaultValue || fieldProps.value;
+        const { actions: { setFieldValue } } = props;
+
+        setFieldValue(props.name, defaultValueToSet);
       }
 
       render() {

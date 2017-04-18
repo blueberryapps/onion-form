@@ -29,8 +29,6 @@ const initial = {
   }
 };
 
-const store = createStore(() => ({ onionForm: reducer(initial) }));
-
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
 
@@ -39,7 +37,8 @@ describe('connectField()', () => {
   const LastName = connectField('lastName', { customOverrideProp: 'Overriden props' })(TextField);
   const AcceptAgreement = connectField('acceptAgreement', { customOverrideProp: 'Overriden props' })(CheckBox);
 
-  function createStubs(customProps = {}) {
+  function createStubs(customProps = {}, initialState = initial) {
+    const store = createStore((state = { onionForm: initialState }, action) => ({ onionForm: reducer(state.onionForm, action) }));
     const container = TestUtils.renderIntoDocument(
       <ReduxProvider store={store}>
         <Form name="fooForm">
@@ -52,6 +51,7 @@ describe('connectField()', () => {
 
     const fields = TestUtils.scryRenderedComponentsWithType(container, TextField);
     return {
+      store,
       textField: fields[0],
       lastNameField: fields[1],
       checkBox: TestUtils.findRenderedComponentWithType(container, CheckBox)
@@ -98,6 +98,23 @@ describe('connectField()', () => {
       assert.equal(
         createStubs({ tooltip: 'TooltipFoo' }).textField.props.tooltip,
         'TooltipFoo'
+      );
+    });
+
+    it('Text Field should set defaultValue to state', () => {
+      const { store: { getState } } = createStubs({ defaultValue: 'TooltipFoo' }, {});
+
+      assert.equal(
+        getState().onionForm.fields.getIn(['fooForm', 'firstName', 'value']),
+        'TooltipFoo'
+      );
+    });
+
+    it('Text Field should not set defultValue to state when value is present', () => {
+      const { store: { getState } } = createStubs({ defaultValue: 'TooltipFoo' });
+      assert.equal(
+        getState().onionForm.fields.getIn(['fooForm', 'firstName', 'value']),
+        'Bar'
       );
     });
 
@@ -248,6 +265,7 @@ describe('connectField()', () => {
   describe('dynamic default props', () => {
     const DynamicFirstName = connectField('firstName', ({ msg, name }) => ({ label: `${msg('text')} ${name}` }))(TextField);
     const msg = (key) => (`translated.${key}`);
+    const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
     const container = TestUtils.renderIntoDocument(
       <ReduxProvider store={store}>
         <Form name="fooForm">
