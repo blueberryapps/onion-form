@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 export default function connectSubmit(Submit) {
   return createContextExtractor('Submit')(
     connect(
-      (state, { disabled, onionFormName }) => {
+      (state, { disabled, onionFormName, onionIsValid }) => {
         const anyValidationErrors = hasErrors(state, onionFormName);
         const anyApiErrors = hasApiErrors(state, onionFormName);
         const anyValues = hasValues(state, onionFormName);
+
         return {
           disabled: anyValidationErrors || !!disabled,
           hasErrors: anyValidationErrors || anyApiErrors,
+          isValid: onionIsValid(),
           hasValues: anyValues
         };
       },

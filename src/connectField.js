@@ -41,8 +41,11 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       static displayName = `Form${fieldName}Field`;
 
       componentDidMount() {
-        const { name, onionFieldRegister } = this.props;
+        const { name, actions: { setFieldValue }, onionFieldRegister } = this.props;
+        const fieldProps = this.getFieldProps();
+
         onionFieldRegister(name, this);
+        setFieldValue(name, fieldProps.value);
       }
 
       componentWillReceiveProps(next) {

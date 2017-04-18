@@ -2,7 +2,7 @@
 
 import connectField from '../src/connectField';
 import Form from '../src/Form.react';
-import React, { Component } from 'react';
+import React from 'react';
 import reducer from '../src/reducer';
 import sinon from 'sinon';
 import TestUtils from 'react-addons-test-utils';
@@ -10,6 +10,7 @@ import { assert } from 'chai';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
+import { TextField, CheckBox } from './mocks';
 
 const initial = {
   fields: {
@@ -34,22 +35,6 @@ global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
 
 describe('connectField()', () => {
-  class TextField extends Component {
-    render() {
-      return (
-        <input type="text" {...this.props} />
-      );
-    }
-  }
-
-  class CheckBox extends Component {
-    render() {
-      return (
-        <input type="checkbox" {...this.props} />
-      );
-    }
-  }
-
   const FirstName = connectField('firstName', { customOverrideProp: 'Overriden props' })(TextField);
   const LastName = connectField('lastName', { customOverrideProp: 'Overriden props' })(TextField);
   const AcceptAgreement = connectField('acceptAgreement', { customOverrideProp: 'Overriden props' })(CheckBox);

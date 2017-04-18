@@ -2,7 +2,8 @@ import * as actions from './actions';
 import { Record, Map } from 'immutable';
 
 export const InitialState = Record({
-  fields: new Map()
+  fields: new Map(),
+  forms: new Map()
 });
 
 const initialState = new InitialState;

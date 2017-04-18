@@ -21,6 +21,7 @@ export default class Form extends Component {
   }
 
   static childContextTypes = {
+    onionIsValid: RPT.func.isRequired,
     onionFieldRegister: RPT.func.isRequired,
     onionFormName: RPT.string.isRequired,
     onionLiveValidate: RPT.func.isRequired,
@@ -34,6 +35,7 @@ export default class Form extends Component {
 
   getChildContext() {
     return {
+      onionIsValid: this.isFormValid.bind(this),
       onionFieldRegister: this.fieldRegister.bind(this),
       onionFormName: this.props.name,
       onionLiveValidate: this.liveValidate.bind(this),
@@ -75,6 +77,13 @@ export default class Form extends Component {
     this._enableAllFieldsLiveValidation();
 
     return this.validate(this._allFieldNames());
+  }
+
+  isFormValid() {
+    const errors = this._getValidationErrors(this._allFieldNames());
+
+    return !Object.keys(errors)
+      .reduce((acc, error) => acc || errors[error], false);
   }
 
   validate(fieldsToValidate) {

@@ -57,6 +57,10 @@ describe('connectSubmit()', () => {
     assert.isFalse(submit.props.disabled);
   });
 
+  it('should have isValid in prop', () => {
+    assert.isTrue(submit.props.isValid);
+  });
+
   it('should override disabled in prop by customProp', () => {
     assert.isTrue(createSubmit({ disabled: true }).props.disabled);
   });
