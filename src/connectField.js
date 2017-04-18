@@ -65,8 +65,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         const { name, field: { liveValidation }, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
 
         // if live validation is not already set, set it now
-        if (!liveValidation)
-          setFieldLiveValidation(name, true);
+        const result = (!liveValidation) ? setFieldLiveValidation(name, true) : true;
 
         // call passed callback
         if (typeof onBlur === 'function')
@@ -75,7 +74,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         if (typeof onionLiveValidate === 'function')
           onionLiveValidate();
 
-        return true;
+        return result;
       }
 
       onFocus() {
