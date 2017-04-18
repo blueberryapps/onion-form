@@ -19,6 +19,7 @@ export interface PossibleOverrideProps {
   error?: string | null;
   hint?: string | null;
   label?: string | null;
+  name?: string | null;
   onChange?: OnFormEvent | any;
   onBlur?: OnFormEvent | any;
   onFocus?: OnFormEvent | any;
@@ -130,4 +131,3 @@ export namespace actions {
     function setMultipleFields(form: string, property: string, values: Values): Action;
 
 }
-
