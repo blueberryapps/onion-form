@@ -14,7 +14,8 @@ export default function connectSubmit(Submit) {
         return {
           disabled: anyValidationErrors || !!disabled,
           hasErrors: anyValidationErrors || anyApiErrors,
-          hasValues: anyValues
+          hasValues: anyValues,
+          valid: state.getIn(['fields', onionFormName, '__valid?']) === true
         };
       },
       (state, { onClick, onionOnSubmit }) => ({

@@ -60,6 +60,11 @@ export default function translationReducer(inputState = initialState, action = {
         state
       );
     }
+
+    case actions.SET_FORM_VALIDITY: {
+      const { form, valid } = action;
+      return state.setIn(['fields', form, '__valid?'], valid);
+    }
   }
 
   return state;
