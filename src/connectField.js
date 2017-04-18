@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 export default function connectField(fieldName, defaultProps = {}, customValidations = []) {
   return FieldComponent => {
     @connect(
-      (state, { onionFormName }) => ({
-        field: state.onionForm.getIn(['fields', onionFormName, fieldName])
+      (state, { onionFormName, name }) => ({
+        field: state.onionForm.getIn(['fields', onionFormName, name || fieldName])
       }),
       (dispatch, { onionFormName }) => ({
         actions: bindActionCreators(createFormActions(onionFormName), dispatch)
@@ -22,6 +22,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         hint: RPT.string, // custom
         label: RPT.string, // custom
         msg: RPT.func, // custom -> given by translate() decorator #finance-translate
+        name: RPT.string,
         onBlur: RPT.func, // custom
         onChange: RPT.func, // custom
         onFocus: RPT.func, // custom
@@ -33,26 +34,30 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         validations: RPT.array
       }
 
+      static defaultProps = {
+        name: fieldName
+      }
+
       static displayName = `Form${fieldName}Field`;
 
       componentDidMount() {
-        const { onionFieldRegister } = this.props;
-        onionFieldRegister(fieldName, this);
+        const { name, onionFieldRegister } = this.props;
+        onionFieldRegister(name, this);
       }
 
       componentWillUnmount() {
-        const { onionFieldRegister } = this.props;
-        onionFieldRegister(fieldName, null);
+        const { name, onionFieldRegister } = this.props;
+        onionFieldRegister(name, null);
       }
 
       onBlur() {
-        const { onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
+        const { name, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
 
-        const result = setFieldLiveValidation(fieldName, true);
+        const result = setFieldLiveValidation(name, true);
 
         // call passed callback
         if (typeof onBlur === 'function')
-          onBlur({ name: fieldName });
+          onBlur({ name });
 
         if (typeof onionLiveValidate === 'function')
           onionLiveValidate();
@@ -61,21 +66,21 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       onFocus() {
-        const { onFocus } = this.props;
-        return onFocus && onFocus({ name: fieldName });
+        const { name, onFocus } = this.props;
+        return onFocus && onFocus({ name });
       }
 
       onChange({ value, target }) {
-        const { onChange, actions: { setFieldValue }, onionLiveValidate } = this.props;
+        const { name, onChange, actions: { setFieldValue }, onionLiveValidate } = this.props;
 
         // fix checkbox to return value based on checked/unchecked
         const newValue = typeof value === 'boolean' ? value : (value || target && ((target.type === 'checkbox') ? target.checked : target.value));
 
-        const result = setFieldValue(fieldName, newValue);
+        const result = setFieldValue(name, newValue);
 
         // call passed callback
         if (typeof onChange === 'function')
-          onChange({ name: fieldName, value: newValue });
+          onChange({ name, value: newValue });
 
         if (typeof onionLiveValidate === 'function')
           onionLiveValidate();
@@ -109,7 +114,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       render() {
-        const { onionFormName, label, tooltip, hint, placeholder, ...rest } = this.props;
+        const { name, onionFormName, label, tooltip, hint, placeholder, ...rest } = this.props;
         const field = this.getFieldProps();
         const error = field.error || field.apiError;
 
@@ -123,15 +128,15 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
             {...fieldProps}
             value={fieldProps.value || ''}
             error={error && this.msg(`errors.${error}`, error) || error}
-            hint={hint || defaultProps.hint || this.msg(`${fieldName}.hint`)}
-            label={label || defaultProps.label || this.msg(`${fieldName}.label`)}
-            placeholder={placeholder || defaultProps.placeholder || this.msg(`${fieldName}.placeholder`)}
-            name={fieldName}
+            hint={hint || defaultProps.hint || this.msg(`${name}.hint`)}
+            label={label || defaultProps.label || this.msg(`${name}.label`)}
+            placeholder={placeholder || defaultProps.placeholder || this.msg(`${name}.placeholder`)}
+            name={name}
             onBlur={this.onBlur.bind(this)}
             onChange={this.onChange.bind(this)}
             onFocus={this.onFocus.bind(this)}
             onionFormName={onionFormName}
-            tooltip={tooltip || defaultProps.tooltip || this.msg(`${fieldName}.tooltip`)}
+            tooltip={tooltip || defaultProps.tooltip || this.msg(`${name}.tooltip`)}
           />
         );
       }

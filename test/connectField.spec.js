@@ -15,7 +15,7 @@ const initial = {
   fields: {
     fooForm: {
       firstName: {
-        customProperty: 'Hi Hello From State',
+        customProperty: 'Hi Hello From State First Name',
         value: 'Bar',
         error: 'isRequired'
       },
@@ -93,6 +93,13 @@ describe('connectField()', () => {
         createStubs({ label: 'LabelFoo' }).textField.props.label,
         'LabelFoo'
       );
+    });
+
+    it('Text Field should have name overriden', () => {
+      const { textField: { props: { name, value, customProperty } } } = createStubs({ name: 'acceptAgreement' });
+      assert.equal(name, 'acceptAgreement');
+      assert.equal(value, false);
+      assert.equal(customProperty, 'Hi Hello From State');
     });
 
     it('Text Field should have onFocus prop set', () => {
@@ -203,7 +210,7 @@ describe('connectField()', () => {
   });
 
   it('Text Field should have custom properties from state send as props', () => {
-    assert.deepEqual(textField.props.customProperty, 'Hi Hello From State');
+    assert.deepEqual(textField.props.customProperty, 'Hi Hello From State First Name');
   });
 
   it('Text Field should have custom properties from override props send as props', () => {
