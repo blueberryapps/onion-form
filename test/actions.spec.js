@@ -91,6 +91,16 @@ describe('actions', () => {
     );
   });
 
+  it('clearForm()', () => {
+    assert.deepEqual(
+      actions.clearForm('registrationForm'),
+      {
+        type: actions.CLEAR_ONION_FORM,
+        form: 'registrationForm',
+      }
+    );
+  });
+
   it('createFormActions()', () => {
     const formActions = createFormActions('registrationForm');
     assert.deepEqual(

@@ -110,11 +110,15 @@ export function reducer(state: InitialState, action: Action): InitialState;
 export function validateField(value: any, validations: Validation[], otherValues: Values): any;
 
 export namespace actions {
+    const CLEAR_ONION_FORM: string;
+
     const CLEAR_ONION_FORM_PROPERTY: string;
 
     const SET_ONION_FORM_FIELD_PROPERTY: string;
 
     const SET_ONION_FORM_MULTIPLE_FIELDS: string;
+
+    function clearForm(form: string): Action;
 
     function clearFormProperty(form: string, property: string): Action;
 

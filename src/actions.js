@@ -1,6 +1,7 @@
 export const SET_ONION_FORM_FIELD_PROPERTY = 'SET_ONION_FORM_FIELD_PROPERTY';
 export const SET_ONION_FORM_MULTIPLE_FIELDS = 'SET_ONION_FORM_MULTIPLE_FIELDS';
 export const CLEAR_ONION_FORM_PROPERTY = 'CLEAR_ONION_FORM_PROPERTY';
+export const CLEAR_ONION_FORM = 'CLEAR_ONION_FORM';
 
 export function setMultipleFields(form, property, values) {
   return {
@@ -18,6 +19,13 @@ export function setFormFieldProperty(form, field, property, value) {
     field,
     property,
     value
+  };
+}
+
+export function clearForm(form) {
+  return {
+    type: CLEAR_ONION_FORM,
+    form
   };
 }
 
@@ -47,6 +55,7 @@ export function setFieldApiError(form, field, error) {
 
 export default function createFormActions(form) {
   return {
+    clearForm: clearForm.bind(null, form),
     clearFormProperty: clearFormProperty.bind(null, form),
     setFieldApiError: setFieldApiError.bind(null, form),
     setFieldLiveValidation: setFieldLiveValidation.bind(null, form),

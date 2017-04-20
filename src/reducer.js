@@ -7,7 +7,7 @@ export const InitialState = Record({
 
 const initialState = new InitialState;
 
-const deafultFieldProperties = Map({
+export const deafultFieldProperties = Map({
   value: '',
   liveValidation: false,
   error: null,
@@ -48,6 +48,15 @@ export default function translationReducer(inputState = initialState, action = {
       const { form, property, values } = action;
       return Object.keys(values).reduce(
         (acc, field) => acc.setIn(['fields', form, field, property], values[field]),
+        state
+      );
+    }
+
+    case actions.CLEAR_ONION_FORM: {
+      const { form } = action;
+      const fields = state.getIn(['fields', form]) || [];
+      return fields.reduce(
+        (acc, _, field) => acc.setIn(['fields', form, field], deafultFieldProperties),
         state
       );
     }
