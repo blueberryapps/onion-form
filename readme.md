@@ -128,7 +128,7 @@ const store = createStore(combineReducers({ onionForm }), {})
 ## Action Creators
 
 We have multiple action creators for communication with reducer:
-`setMultipleFields`, `setFormFieldProperty`, `clearFormProperty`, `setFieldValue`,
+`setMultipleFields`, `setFormFieldProperty`, `clearForm`, `clearFormProperty`, `setFieldValue`,
 `setFieldLiveValidation`, `setFieldError`, `setFieldApiError`
 All these actions accept `formName` as the first parameter which needs to match FORM_NAME in `<Form name=`FORM_NAME`/>`.
 

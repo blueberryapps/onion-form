@@ -1,5 +1,5 @@
 import * as actions from '../src/actions';
-import reducer, { InitialState } from '../src/reducer';
+import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
 import { assert } from 'chai';
 import { Map } from 'immutable';
 
@@ -72,6 +72,47 @@ describe('reducer()', () => {
     assert.equal(
       reducer(undefined, action).getIn(['fields', 'registration', 'lastName', 'value']),
       'Bar'
+    );
+  });
+
+  it('should clear all fields in form', () => {
+    const initState = {
+      fields: {
+        form1: {
+          firstName: {
+            apiError: 'Something strange',
+            value: 'Foo'
+          },
+          lastName: {
+            value: 'Foo'
+          }
+        },
+        form2: {
+          notClearedField: {
+            apiError: 'Something realy strange',
+            value: 'Foo'
+          }
+        }
+      }
+    };
+
+    const action = {
+      type: actions.CLEAR_ONION_FORM,
+      form: 'form1',
+    };
+
+    assert.equal(
+      reducer(initState, action).getIn(['fields', 'form1', 'firstName']),
+      deafultFieldProperties,
+    );
+    assert.equal(
+      reducer(initState, action).getIn(['fields', 'form1', 'lastName']),
+      deafultFieldProperties,
+    );
+    assert.equal(
+      reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']),
+      'Something realy strange',
+      'Must not affect other forms'
     );
   });
 
