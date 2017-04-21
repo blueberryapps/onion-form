@@ -23,7 +23,7 @@ const initial = {
   }
 };
 
-const store = createStore(() => ({ onionForm: reducer(initial) }));
+const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
 
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
@@ -55,6 +55,10 @@ describe('connectSubmit()', () => {
 
   it('should have disabled in prop', () => {
     assert.isFalse(submit.props.disabled);
+  });
+
+  it('should have valid in prop', () => {
+    assert.isTrue(submit.props.valid);
   });
 
   it('should override disabled in prop by customProp', () => {

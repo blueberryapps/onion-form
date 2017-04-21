@@ -166,15 +166,17 @@ __ONION_PROPS:__
 When you initialize a component in `render` you can pass the following PASSED_PROPS:
 
 __PASSED_PROPS__
-`label`, `onBlur`, `onFocus`, `onChange`, `tooltip`, `hint`
+`label`, `onBlur`, `onFocus`, `onChange`, `tooltip`, `hint`, `defaultValue`
 They will be transferred to the decorated component.
 Functions passed by props (`onFocus`, `onChange`, `onBlur`) will get called too, after onion form callbacks.
 
 Passing order of props is: __DEFAULT_PROPS__ -> __FIELD_VALUES_FROM_STATE__ -> __ONION_PROPS__ -> __PASSED_PROPS__
 
+You can pass `defaultValue` to component by (PROPS or __DEFAULT_PROPS__) to set that value to state on componentDid mount when field has no value already set.
+
 ## connectSubmit(DECORATED_COMPONENT)
 
-You can use `connectSubmit` which will pass `onClick` and `disabled` as prop to the decorated component:
+You can use `connectSubmit` which will pass `onClick`, `valid`, `hasValues`, `hasErrors` and `disabled` as prop to the decorated component:
 
 ```js
 // CustomSubmit.react.js
@@ -186,6 +188,10 @@ const Button = ({ children, disabled, onClick }) => (
 
 export default const connectSubmit(Button);
 ```
+
+- `onClick`: callback function for submitting form
+- `valid`: returns true/false based on fields validations runned against state (errors doesn't need to be in store)
+- `hasErrors`: returns true if form is invalid (based on state from Redux)
 
 ## Translations
 

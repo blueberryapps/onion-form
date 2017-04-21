@@ -73,6 +73,7 @@ declare class Form extends React.Component<FormProps, any> {
 export interface SubmitProps {
   disabled?: boolean;
   hasErrors?: boolean;
+  isValid?: boolean;
   hasValues?: boolean;
   onClick?: () => void;
 }

@@ -2,7 +2,8 @@ import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
 import React, { Component, PropTypes as RPT } from 'react';
 import validateField from './validateField';
-import { clearFormProperty, setMultipleFields } from './actions';
+import { Map } from 'immutable';
+import { clearFormProperty, setMultipleFields, registerField } from './actions';
 
 export default class Form extends Component {
 
@@ -21,6 +22,7 @@ export default class Form extends Component {
   }
 
   static childContextTypes = {
+    onionIsValid: RPT.func.isRequired,
     onionFieldRegister: RPT.func.isRequired,
     onionFormName: RPT.string.isRequired,
     onionLiveValidate: RPT.func.isRequired,
@@ -34,6 +36,7 @@ export default class Form extends Component {
 
   getChildContext() {
     return {
+      onionIsValid: this.isFormValid.bind(this),
       onionFieldRegister: this.fieldRegister.bind(this),
       onionFormName: this.props.name,
       onionLiveValidate: this.liveValidate.bind(this),
@@ -65,16 +68,50 @@ export default class Form extends Component {
   }
 
   fieldRegister(fieldName, field) {
-    if (field)
+    const { name } = this.props;
+    const { store: { getState, dispatch } } = this.context;
+
+
+    if (field) {
       this.fields[fieldName] = field;
-    else
+
+      // Try if field has already data in store
+      if (Map.isMap(getState().onionForm.getIn(['fields', name, fieldName]))) {
+        // Lets try to validate it!
+        const errors = this._getValidationErrors(this._allFieldNames());
+        if (!this.hasAnyError(errors)) {
+          // Save these errors to state just to change it so submit button will refresh
+          dispatch(
+            setMultipleFields(
+              name,
+              'onInitError',
+              errors
+            )
+          );
+        }
+      } else {
+        // It has no footprint so register it
+        dispatch(registerField(name, fieldName));
+      }
+    } else {
       delete this.fields[fieldName];
+    }
   }
 
   formValidate() {
     this._enableAllFieldsLiveValidation();
 
     return this.validate(this._allFieldNames());
+  }
+
+  isFormValid() {
+    const errors = this._getValidationErrors(this._allFieldNames());
+
+    return this.hasAnyError(errors);
+  }
+
+  hasAnyError(errors) {
+    return !Object.keys(errors).reduce((acc, error) => acc || errors[error], false);
   }
 
   validate(fieldsToValidate) {
