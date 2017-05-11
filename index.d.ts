@@ -53,11 +53,14 @@ export interface FieldProps {
 export class Field extends React.Component<FieldProps, any> {
 }
 
+export type OnSubmitCallback = (s: {name: string, values: {[key: string]: any}}) => void;
+export type OnErrorCallback = (e: {name: string, errors: {[key: string]: any}}) => void;
+
 export interface FormProps {
   method?: "POST" | "GET" | "PUT" | "DELETE";
   name: String | string;
-  onError?: (e: {name: string, errors: {[key: string]: any}}) => void;
-  onSubmit?: (s: {name: string, values: {[key: string]: any}}) => void;
+  onError?: OnErrorCallback;
+  onSubmit?: OnSubmitCallback;
   validations?: {[key: string]: Validation[]};
 }
 
