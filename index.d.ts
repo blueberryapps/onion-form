@@ -83,7 +83,7 @@ declare class Submit extends React.Component<SubmitProps, any> {
 
 export interface ButtonProps {
   disabled?: boolean;
-  children: React.ReactChildren;
+  children: React.ReactChild;
   onClick: () => void;
 }
 
