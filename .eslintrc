@@ -23,7 +23,7 @@
     "no-use-before-define": 0, // Enable to define styles after using them in component.
     "react/jsx-no-bind": 0, // Enable arrow functions in Props definitions.
     "react/prefer-stateless-function": 0, // Enable functions with state.
-    "require-jsdoc": 1,
+    "require-jsdoc": 0,
     "valid-jsdoc": 2
   },
   "globals": {

@@ -10,7 +10,8 @@
     "transform-react-jsx",
     "transform-runtime",
     "transform-regenerator",
-    "add-module-exports"
+    "add-module-exports",
+    "transform-flow-strip-types"
   ],
   "env": {
     "build": {
