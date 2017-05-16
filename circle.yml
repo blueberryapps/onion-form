@@ -12,6 +12,7 @@ test:
   override:
     - yarn eslint
     - yarn test
+    - yarn flow
 
 deployment:
   create_release_branch:
