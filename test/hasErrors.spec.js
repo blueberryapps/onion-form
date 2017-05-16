@@ -1,10 +1,10 @@
 import hasErrors from '../src/hasErrors';
 import { assert } from 'chai';
-import { fromJS } from 'immutable';
+import Immutable from 'seamless-immutable';
 
 describe('hasErrors()', () => {
   const state = {
-    onionForm: fromJS({
+    onionForm: Immutable({
       fields: {
         WithError: {
           foo: { error: 'required' },

@@ -84,7 +84,9 @@
     "sinon-chai": "^2.8.0",
     "tmp": "0.0.28"
   },
-  "dependencies": {},
+  "dependencies": {
+    "seamless-immutable": "^7.1.2"
+  },
   "peerDependencies": {
     "immutable": ">=3",
     "react": ">=0.14.2 || >=15.0.0",
