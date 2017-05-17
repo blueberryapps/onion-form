@@ -39,7 +39,7 @@ type Reducer = (acc: Object, value: any, key: string, index:number, iter: Object
 
 export function reduceObject(structure: Object, reducer: Reducer, accumulator: any): any {
   const keys: Array<string> = Object.keys(structure);
-  const values: Array<any> = Object.values(structure);
+  const values: Array<any> = keys.map(key => structure[key]);
   return values.reduce((acc: Object, value: any, index: number) =>
     reducer(acc, value, keys[index], index, structure), accumulator);
 }
