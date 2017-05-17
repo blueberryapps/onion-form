@@ -37,6 +37,12 @@ export function mapKeys(structure: Object, mapper: KeysMapper): Object {
 
 type Reducer = (acc: Object, value: any, key: string, index:number, iter: Object) => Object;
 
+/*
+  This is convenience method, with the same API as reduce method used on Immutable Maps.
+  In order to somehow blend in seamless immutable API, this helper behaves as a static
+  method. For a first time reader it's easier to lookup import of this fn, than search
+  for mysterious extended prototype.
+*/
 export function reduceObject(structure: Object, reducer: Reducer, accumulator: any): any {
   const keys: Array<string> = Object.keys(structure);
   const values: Array<any> = keys.map(key => structure[key]);
