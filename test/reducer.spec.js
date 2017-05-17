@@ -1,9 +1,7 @@
 import * as actions from '../src/actions';
-import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
+import reducer, { initialState, deafultFieldProperties } from '../src/reducer';
 import { assert } from 'chai';
-import { Map } from 'immutable';
-
-const initialState = new InitialState;
+import Immutable from 'seamless-immutable';
 
 describe('reducer()', () => {
   it('should initialize state', () => {
@@ -13,27 +11,27 @@ describe('reducer()', () => {
     );
   });
 
-  it('should revive state with fields as map', () => {
+  it('should revive state with fields as Immutable', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    const value = state.get('fields');
-    assert(Map.isMap(value), `Should be map but is ${typeof value}`);
+    const value = state.fields;
+    assert(Immutable.isImmutable(value), 'Should be Immutable');
   });
 
-  it('should revive state with form as map', () => {
+  it('should revive state with form as Immutable', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.getIn(['fields', 'registration']);
-    assert(Map.isMap(value), `Should be map but is ${typeof value}`);
-    assert.deepEqual(Object.keys(state.get('fields').toJS()), ['registration']);
+    assert(Immutable.isImmutable(value), 'Should be Immutable');
+    assert.deepEqual(Object.keys(state.fields), ['registration']);
   });
 
   it('should revive state with form and field', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    assert.deepEqual(Object.keys(state.getIn(['fields', 'registration']).toJS()), ['firstName']);
+    assert.deepEqual(Object.keys(state.getIn(['fields', 'registration'])), ['firstName']);
   });
 
   it('should revive and field should have default fields', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    assert.deepEqual(state.getIn(['fields', 'registration', 'firstName']).toJS(), {
+    assert.deepEqual(state.getIn(['fields', 'registration', 'firstName']), {
       apiError: null,
       value: 'Foo',
       error: null,

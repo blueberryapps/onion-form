@@ -1,12 +1,11 @@
 import extractPropertyFromFields from '../src/extractPropertyFromFields';
 import { assert } from 'chai';
-import { fromJS } from 'immutable';
 
 describe('extractPropertyFromFields()', () => {
-  const fields = fromJS({
+  const fields = {
     foo: { value: 'Bar', missingProp: true },
     bar: { value: 'Foo', }
-  });
+  };
 
   it('extract property from null fields', () => {
     assert.deepEqual(

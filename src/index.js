@@ -6,7 +6,7 @@ export Button from './Button.react';
 
 // Redux
 export * as actions from './actions';
-export reducer, { InitialState } from './reducer';
+export reducer, { initialState } from './reducer';
 
 // Decorators
 export connectField from './connectField';

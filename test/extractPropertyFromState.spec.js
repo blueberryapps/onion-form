@@ -1,10 +1,10 @@
 import extractPropertyFromState from '../src/extractPropertyFromState';
+import Immutable from 'seamless-immutable';
 import { assert } from 'chai';
-import { fromJS } from 'immutable';
 
 describe('extractPropertyFromState()', () => {
   const state = {
-    onionForm: fromJS({
+    onionForm: Immutable({
       fields: {
         Form1: {
           foo: { value: 'Bar', missingProp: true },

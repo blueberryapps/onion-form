@@ -1,10 +1,10 @@
 import hasValues from '../src/hasValues';
 import { assert } from 'chai';
-import { fromJS } from 'immutable';
+import Immutable from 'seamless-immutable';
 
 describe('hasValues()', () => {
   const state = {
-    onionForm: fromJS({
+    onionForm: Immutable({
       fields: {
         WithValue: {
           foo: { value: 'required' },
