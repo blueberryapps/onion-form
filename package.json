@@ -16,7 +16,8 @@
     "test": "./scripts/mocha.js",
     "test:watch": "./scripts/mocha-watch.js",
     "coverage": "./scripts/coverage.js",
-    "flow": "flow"
+    "flow": "flow",
+    "flow:typed": "flow-typed install"
   },
   "repository": {
     "type": "git",
@@ -84,11 +85,10 @@
     "tmp": "0.0.28"
   },
   "dependencies": {
+    "flow-typed": "^2.1.2",
     "seamless-immutable": "^7.1.2"
   },
   "peerDependencies": {
-    "react": ">=0.14.2 || >=15.0.0",
-    "react-redux": ">=3",
-    "redux": ">=3"
+
   }
 }
