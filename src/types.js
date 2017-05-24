@@ -29,7 +29,7 @@ export type FieldType = {
   value: string,
   liveValidation: boolean,
   error: null | string,
-  apiError: null | null
+  apiError: null | string
 }
 
 export type FieldsType = {

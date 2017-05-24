@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable';
 
 import { reduceObject } from './helpers';
 
-import type { StateType, FieldsType, ActionType } from './types';
+import type { StateType, ActionType, StateTypeObject, FieldsType } from './types';
 
 export const initialState: StateType = Immutable({
   fields: Immutable({})
@@ -38,7 +38,7 @@ function revive(state: StateType) {
  * @param  {Object} action      Flux action
  * @return {Object}             Updated app state
  */
-export default function translationReducer(inputState: StateType = initialState, action: ActionType): StateType {
+export default function translationReducer(inputState: StateType | StateTypeObject = initialState, action: ActionType): StateType {
   const state: StateType = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
 
   switch (action.type) {
