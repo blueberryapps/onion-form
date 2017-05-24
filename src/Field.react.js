@@ -1,11 +1,11 @@
+// @flow
 import connectField from './connectField';
-import React, { Component, PropTypes as RPT } from 'react';
+import React, { Component } from 'react';
 
 export default class Field extends Component {
-
-  static propTypes = {
-    component: RPT.object,
-    name: RPT.string.isRequired
+  props: {
+    component?: React.Element<*>,
+    name: string
   }
 
   render() {
@@ -17,9 +17,9 @@ export default class Field extends Component {
 }
 
 export class BasicInput extends Component { // eslint-disable-line
-  static propTypes = {
-    error: RPT.string,
-    label: RPT.string
+  props: {
+    label?: string,
+    error?: string
   }
 
   render() {

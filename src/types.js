@@ -10,7 +10,8 @@ export type PropertyType =
   | 'apiError'
   | 'error'
   | 'liveValidation'
-  | 'value';
+  | 'value'
+  | 'onInitError';
 
 // Actions
 
