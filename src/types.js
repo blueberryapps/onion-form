@@ -1,9 +1,9 @@
 /* @flow */
-
+import type Immutable from 'seamless-immutable';
 export type ValueType = any;
 
 export type ValuesType = {
-  [string]: ValueType
+  [key: string]: ValueType
 }
 
 export type PropertyType =
@@ -32,17 +32,18 @@ export type FieldType = {
 }
 
 export type FieldsType = {
-  [string]: FieldType
+  [key: string]: FieldType
 }
 
 export type FieldsFormType = {
-  [string]: {
-    [string]: FieldType
+  [key: string]: {
+    [key: string]: FieldType
   }
 }
 
-export type StateType = {
+export type StateTypeObject = {
   fields: FieldsFormType
 }
 
+export type StateType = Immutable<StateTypeObject>;
 

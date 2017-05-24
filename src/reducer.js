@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable';
 
 import { reduceObject } from './helpers';
 
-import type { StateType, FieldsType, ActionType } from './types'
+import type { StateType, FieldsType, ActionType } from './types';
 
 export const initialState: StateType = Immutable({
   fields: Immutable({})
@@ -17,9 +17,9 @@ export const deafultFieldProperties = Immutable({
   apiError: null
 });
 
-function reviveFields(fields: FieldsType): Immutable {
+function reviveFields(fields: FieldsType): Immutable<FieldsType> {
   return Object.keys(fields).reduce(
-    (acc: Immutable, field: string): Immutable => acc.set(field, deafultFieldProperties.merge(fields[field])),
+    (acc: Immutable<FieldsType>, field: string): Immutable<FieldsType> => acc.set(field, deafultFieldProperties.merge(fields[field])),
     Immutable({})
   );
 }
@@ -27,7 +27,7 @@ function reviveFields(fields: FieldsType): Immutable {
 function revive(state: StateType) {
   const fields = (state.fields || Immutable({}));
   return Object.keys(fields).reduce(
-    (acc: Immutable, form: string) => acc.setIn(['fields', form], reviveFields(fields[form]))
+    (acc: StateType, form: string) => acc.setIn(['fields', form], reviveFields(fields[form]))
     , initialState
   );
 }
@@ -39,7 +39,7 @@ function revive(state: StateType) {
  * @return {Object}             Updated app state
  */
 export default function translationReducer(inputState: StateType = initialState, action: ActionType): StateType {
-  const state: Immutable = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
+  const state: StateType = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
 
   switch (action.type) {
     case actions.REGISTER_ONION_FORM_FIELD: {
@@ -59,7 +59,7 @@ export default function translationReducer(inputState: StateType = initialState,
       const { form, property, values } = action;
       const valuesKeys = Object.keys(values);
       return valuesKeys.reduce(
-        (acc: Immutable<StateType>, field: string): StateType => acc.setIn(['fields', form, field, property], values[field]),
+        (acc: StateType, field: string): StateType => acc.setIn(['fields', form, field, property], values[field]),
         state
       );
     }

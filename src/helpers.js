@@ -43,7 +43,7 @@ type Reducer = (acc: Object, value: any, key: string, index:number, iter: Object
   method. For a first time reader it's easier to lookup import of this fn, than search
   for mysterious extended prototype.
 */
-export function reduceObject(structure: Object, reducer: Reducer, accumulator: any): any {
+export function reduceObject(structure: Object | Immutable<*>, reducer: Reducer, accumulator: any): any {
   const keys: Array<string> = Object.keys(structure);
   const values: Array<any> = keys.map(key => structure[key]);
   return values.reduce((acc: Object, value: any, index: number) =>
