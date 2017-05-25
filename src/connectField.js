@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 export default function connectField(fieldName: string, defaultProps?: Object = {}, customValidations?: Array<*> = []) {
-  return (FieldComponent: Class<React.Component<*, *, *>>) => { // eslint-disable-line no-undef
+  return (FieldComponent: Class<React.Component<*, *, *>>) => {
     @connect(
       (state, { onionFormName, name }) => ({
         field: state.onionForm.getIn(['fields', onionFormName, name || fieldName])

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 export default class Field extends Component {
   props: {
-    component?: Class<React.Component<*, *, *>>, // eslint-disable-line no-undef
+    component?: Class<React.Component<*, *, *>>,
     name: string
   }
 

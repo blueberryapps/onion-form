@@ -3,7 +3,8 @@
   "plugins": [
     "import",
     "jsdoc",
-    "require-jsdoc"
+    "require-jsdoc",
+    "flowtype"
   ],
   "extends" : ["airbnb"],
   "rules": {
@@ -37,7 +38,9 @@
     "module": false,
     "process": false,
     "require": false,
-    "window": false
+    "window": false,
+    "React": false,
+    "Class": false
   },
   "settings": {
     "import/ignore": [
