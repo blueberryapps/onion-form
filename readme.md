@@ -1,5 +1,5 @@
 ![Onion Form](https://raw.githubusercontent.com/blueberryapps/onion-form/master/onion-form.png)
-[![CircleCI](https://circleci.com/gh/blueberryapps/onion-form.svg?style=svg&circle-token=354f9bfd4c09ed529e4ff20019fc6668d03d9aa1)](https://circleci.com/gh/blueberryapps/onion-form)
+[![CircleCI](https://circleci.com/gh/blueberryapps/onion-form.svg?style=svg&circle-token=354f9bfd4c09ed529e4ff20019fc6668d03d9aa1)](https://circleci.com/gh/blueberryapps/onion-form) [![Dependency Status](https://dependencyci.com/github/blueberryapps/onion-form/badge)](https://dependencyci.com/github/blueberryapps/onion-form)
 
 > As a developer you are assigned with creating a registration form on Registration page
 > with fields for first name, last name, e-mail and password, validate them and then
