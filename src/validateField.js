@@ -1,7 +1,5 @@
-export default function validateField(value, validations, otherValues) {
-  const errors = (validations || []).reduce(
-    (errors, validation) => errors.concat(validation(value, otherValues) || []),
-    []
-  );
-  return errors[0] || null;
+export default function validateField(value, validations = [], otherValues) {
+  const validation = validations.find(validation => !!validation(value, otherValues));
+
+  return validation ? validation(value, otherValues) : null;
 }
