@@ -108,7 +108,7 @@ export function extractPropertyFromState(state: any, formName: any, property: st
 
 export function reducer(state: InitialState, action: Action): InitialState;
 
-export function validateField(value: any, validations: Validation[], otherValues: Values): any;
+export function validateField(value: any, validations: Validation[], otherValues?: Values): any;
 
 export namespace actions {
     const CLEAR_ONION_FORM: string;
