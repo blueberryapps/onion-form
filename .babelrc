@@ -23,7 +23,7 @@
       "plugins": [
         "syntax-async-functions",
         "syntax-jsx",
-        "transform-react-constant-elements",
+        "transform-react-constant-elements"
       ]
     }
   }
