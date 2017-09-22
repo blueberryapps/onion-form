@@ -5,10 +5,9 @@ import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
 import Button from '../src/Button.react';
-import TestUtils from 'react-addons-test-utils';
 import { createStore } from 'redux';
-import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
+import { mount } from 'enzyme';
 
 const initial = {
   fields: {
@@ -24,43 +23,39 @@ const initial = {
 
 const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
 
-global.document = jsdom('<!doctype html><html><body></body></html>');
-global.window = document.defaultView;
-
 const OnionSubmit = connectSubmit(Button);
 
 describe('connectSubmit()', () => {
   function createSubmit(customProps = {}) {
-    const container = TestUtils.renderIntoDocument(
+    const wrapper = mount(
       <ReduxProvider store={store}>
         <Form name="fooForm">
           <OnionSubmit {...customProps}>Send</OnionSubmit>
         </Form>
       </ReduxProvider>
     );
-
-    return TestUtils.findRenderedComponentWithType(container, Button);
+    return wrapper.find(Button);
   }
 
   const submit = createSubmit({});
 
   it('should have children prop', () => {
-    expect(submit.props.children).toBe('Send');
+    expect(submit.prop('children')).toBe('Send');
   });
 
   it('should have onClick in prop', () => {
-    expect(typeof submit.props.onClick).toBe('function');
+    expect(typeof submit.prop('onClick')).toBe('function');
   });
 
   it('should have disabled in prop', () => {
-    expect(submit.props.disabled).toBe(false);
+    expect(submit.prop('disabled')).toBe(false);
   });
 
   it('should have valid in prop', () => {
-    expect(submit.props.valid).toBe(true);
+    expect(submit.prop('valid')).toBe(true);
   });
 
   it('should override disabled in prop by customProp', () => {
-    expect(createSubmit({ disabled: true }).props.disabled).toBe(true);
+    expect(createSubmit({ disabled: true }).prop('disabled')).toBe(true);
   });
 });
