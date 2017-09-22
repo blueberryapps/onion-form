@@ -7,6 +7,7 @@ jobs:
     steps:
       - checkout
       - run: apt-get update && apt-get install -y libelf1
+      - run: npm i -g yarn
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: yarn install
@@ -37,7 +38,7 @@ jobs:
             - ./node_modules
       - run: yarn eslint
       - run: yarn flow
-      - run: yarn yarn coverage
+      - run: yarn coverage
       - run: yarn build
 
 workflows:
