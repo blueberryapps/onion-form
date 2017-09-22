@@ -39,6 +39,7 @@
     "context": false,
     "describe": false,
     "it": false,
+    "expect": false,
     "module": false,
     "process": false,
     "require": false,
