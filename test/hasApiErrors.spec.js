@@ -1,5 +1,4 @@
 import hasApiErrors from '../src/hasApiErrors';
-import { assert } from 'chai';
 import Immutable from 'seamless-immutable';
 
 describe('hasApiErrors()', () => {
@@ -20,14 +19,14 @@ describe('hasApiErrors()', () => {
   };
 
   it('form with at least one field with API error', () => {
-    assert.isTrue(hasApiErrors(state, 'WithError'));
+    expect(hasApiErrors(state, 'WithError')).toBe(true);
   });
 
   it('form with fields with null API error', () => {
-    assert.isFalse(hasApiErrors(state, 'NoError'));
+    expect(hasApiErrors(state, 'NoError')).toBe(false);
   });
 
   it('form with no fields', () => {
-    assert.isFalse(hasApiErrors(state, 'NoFields'));
+    expect(hasApiErrors(state, 'NoFields')).toBe(false);
   });
 });
