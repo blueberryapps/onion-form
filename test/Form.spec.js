@@ -1,12 +1,11 @@
 import * as actions from '../src/actions';
 import connectField from '../src/connectField';
-import TestUtils from 'react-addons-test-utils';
 import Form from '../src/Form.react';
 import reducer from '../src/reducer';
 import React, { Component } from 'react';
 import { createStore } from 'redux';
-import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
+import { mount } from 'enzyme';
 
 const initial = {
   onionForm: {
@@ -22,9 +21,6 @@ const initial = {
     }
   }
 };
-
-global.document = jsdom('<!doctype html><html><body></body></html>');
-global.window = document.defaultView;
 
 const TextField = (props) => (<input type="text" {...props} />);
 
@@ -52,7 +48,7 @@ describe('Form', () => {
 
   const createContainer = (validations) => {
     const store = createStore((state, action) => ({ onionForm: reducer(state.onionForm, action) }), initial);
-    return TestUtils.renderIntoDocument(
+    return mount(
       <ReduxProvider store={store}>
         <Form name="OnionForm" validations={validations} onSubmit={onSubmit} onError={onError}>
           <Passthrough />
@@ -62,8 +58,8 @@ describe('Form', () => {
   };
 
   const container = createContainer(validations);
-  const passthrough = TestUtils.findRenderedComponentWithType(container, Passthrough);
-  const form = TestUtils.findRenderedComponentWithType(container, Form);
+  const form = container.find(Form).getNode();
+  const passthrough = container.find(Passthrough).getNode();
   const passthroughCtx = passthrough.context;
 
   it('should pass onionFormName in context to children', () => {
@@ -113,7 +109,7 @@ describe('Form', () => {
 
   describe('_submit()', () => {
     const containerWithoutValidations = createContainer({});
-    const formWithoutValidations = TestUtils.findRenderedComponentWithType(containerWithoutValidations, Form);
+    const formWithoutValidations = containerWithoutValidations.find(Form).getNode();
 
     it('should call onSubmit() callback when form valid', () => {
       expect(formWithoutValidations._isValid()).toBe(true);
@@ -157,14 +153,14 @@ describe('Form', () => {
 
     const createForm = (fields, formValidations) => {
       const store = createStore((state, action) => ({ onionForm: reducer(state.onionForm, action) }), initial);
-      const container = TestUtils.renderIntoDocument(
+      const wrapper = mount(
         <ReduxProvider store={store}>
           <Form name="OnionForm" onSubmit={onSubmit} onError={onError} validations={formValidations}>
             {fields}
           </Form>
         </ReduxProvider>
       );
-      return TestUtils.findRenderedComponentWithType(container, Form);
+      return wrapper.find(Form).getNode();
     };
 
     it('should pass for valid fields', () => {
