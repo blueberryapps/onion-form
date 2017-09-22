@@ -13,9 +13,9 @@
     "preversion": "npm run clean",
     "version": "npm run build",
     "eslint": "./scripts/eslint.js",
-    "test": "./scripts/mocha.js",
-    "test:watch": "./scripts/mocha-watch.js",
-    "coverage": "./scripts/coverage.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage": "jest --coverage",
     "flow": "flow"
   },
   "repository": {
