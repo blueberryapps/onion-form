@@ -6,6 +6,7 @@ jobs:
     working_directory: ~/w
     steps:
       - checkout
+      - run: apt-get update && apt-get install -y libelf1
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: yarn install
@@ -26,6 +27,7 @@ jobs:
     working_directory: ~/w
     steps:
       - checkout
+      - run: apt-get update && apt-get install -y libelf1
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run: yarn install
