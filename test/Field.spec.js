@@ -5,7 +5,6 @@ import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
 import TestUtils from 'react-addons-test-utils';
-import { assert } from 'chai';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -43,23 +42,23 @@ describe('Field', () => {
   const stub = createStub({}, BasicInput);
 
   it('input should have name prop', () => {
-    assert.equal(stub.props.name, 'firstName');
+    expect(stub.props.name).toBe('firstName');
   });
 
   it('input should have onChange prop', () => {
-    assert.typeOf(stub.props.onChange, 'function');
+    expect(typeof stub.props.onChange).toBe('function');
   });
 
   it('input should have value prop', () => {
-    assert.equal(stub.props.value, 'Bar');
+    expect(stub.props.value).toBe('Bar');
   });
 
   it('input should have error prop', () => {
-    assert.equal(stub.props.error, 'isRequired');
+    expect(stub.props.error).toBe('isRequired');
   });
 
   it('input should have customProperty prop', () => {
-    assert.equal(stub.props.customProperty, 'Hi Hello From State');
+    expect(stub.props.customProperty).toBe('Hi Hello From State');
   });
 
   describe('with custom Component', () => {

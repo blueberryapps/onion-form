@@ -7,7 +7,6 @@ import React from 'react';
 import reducer from '../src/reducer';
 import Button from '../src/Button.react';
 import TestUtils from 'react-addons-test-utils';
-import { assert } from 'chai';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -42,31 +41,31 @@ describe('Integration', () => {
 
   it('should have valid true when no validations', () => {
     const submit = createSubmit();
-    assert.isTrue(submit.props.valid);
+    expect(submit.props.valid).toBe(true);
   });
 
   it('should have valid true when all fields are valid (one field)', () => {
     const submit = createSubmit({ name: { value: 'John' } }, { name: [isRequired] });
-    assert.isTrue(submit.props.valid);
+    expect(submit.props.valid).toBe(true);
   });
 
   it('should have valid true when all fields are valid (two fields)', () => {
     const submit = createSubmit({ name: { value: 'John' }, accept: { value: true } }, { name: [isRequired], accept: [isRequired] });
-    assert.isTrue(submit.props.valid);
+    expect(submit.props.valid).toBe(true);
   });
 
   it('should have valid false when all fields are not valid (invalid value)', () => {
     const submit = createSubmit({ name: { value: 'John' }, accept: { value: false } }, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.valid);
+    expect(submit.props.valid).toBe(false);
   });
 
   it('should have valid false when all fields are not valid (missing value in state)', () => {
     const submit = createSubmit({ name: { value: '' } }, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.valid);
+    expect(submit.props.valid).toBe(false);
   });
 
   it('should have valid false when all fields are not valid (missing all values)', () => {
     const submit = createSubmit({}, { name: [isRequired], accept: [isRequired] });
-    assert.isFalse(submit.props.valid);
+    expect(submit.props.valid).toBe(false);
   });
 });

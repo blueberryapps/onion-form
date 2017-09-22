@@ -6,7 +6,6 @@ import React from 'react';
 import reducer from '../src/reducer';
 import Button from '../src/Button.react';
 import TestUtils from 'react-addons-test-utils';
-import { assert } from 'chai';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -46,22 +45,22 @@ describe('connectSubmit()', () => {
   const submit = createSubmit({});
 
   it('should have children prop', () => {
-    assert.equal(submit.props.children, 'Send');
+    expect(submit.props.children).toBe('Send');
   });
 
   it('should have onClick in prop', () => {
-    assert.typeOf(submit.props.onClick, 'function');
+    expect(typeof submit.props.onClick).toBe('function');
   });
 
   it('should have disabled in prop', () => {
-    assert.isFalse(submit.props.disabled);
+    expect(submit.props.disabled).toBe(false);
   });
 
   it('should have valid in prop', () => {
-    assert.isTrue(submit.props.valid);
+    expect(submit.props.valid).toBe(true);
   });
 
   it('should override disabled in prop by customProp', () => {
-    assert.isTrue(createSubmit({ disabled: true }).props.disabled);
+    expect(createSubmit({ disabled: true }).props.disabled).toBe(true);
   });
 });

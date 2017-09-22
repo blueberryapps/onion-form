@@ -3,7 +3,6 @@
 import React from 'react';
 import Button from '../src/Button.react';
 import TestUtils from 'react-addons-test-utils';
-import { assert } from 'chai';
 import { jsdom } from 'jsdom';
 
 global.document = jsdom('<!doctype html><html><body></body></html>');
@@ -16,14 +15,14 @@ describe('Button', () => {
   const button = TestUtils.findRenderedComponentWithType(container, Button);
 
   it('should have children prop', () => {
-    assert.equal(button.props.children, 'Send');
+    expect(button.props.children).toBe('Send');
   });
 
   it('should have onClick in prop', () => {
-    assert.typeOf(button.props.onClick, 'function');
+    expect(typeof button.props.onClick).toBe('function');
   });
 
   it('should have disabled in prop', () => {
-    assert.isTrue(button.props.disabled);
+    expect(button.props.disabled).toBe(true);
   });
 });
