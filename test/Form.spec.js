@@ -5,6 +5,7 @@ import reducer from '../src/reducer';
 import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
+import { TextField } from './mocks';
 import { mount } from 'enzyme';
 
 const initial = {
@@ -21,8 +22,6 @@ const initial = {
     }
   }
 };
-
-const TextField = (props) => (<input type="text" {...props} />);
 
 describe('Form', () => {
   class Passthrough extends Component {

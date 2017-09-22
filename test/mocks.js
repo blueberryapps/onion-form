@@ -3,9 +3,10 @@
 import React, { Component } from 'react';
 
 export class TextField extends Component {
+
   render() {
     return (
-      <input type="text" {...this.props} />
+      <input type="text" />
     );
   }
 }
@@ -13,7 +14,7 @@ export class TextField extends Component {
 export class CheckBox extends Component {
   render() {
     return (
-      <input type="checkbox" {...this.props} />
+      <input type="checkbox" />
     );
   }
 }
