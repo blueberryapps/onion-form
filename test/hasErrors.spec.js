@@ -1,5 +1,4 @@
 import hasErrors from '../src/hasErrors';
-import { assert } from 'chai';
 import Immutable from 'seamless-immutable';
 
 describe('hasErrors()', () => {
@@ -20,14 +19,14 @@ describe('hasErrors()', () => {
   };
 
   it('form with at least one field with error', () => {
-    assert.isTrue(hasErrors(state, 'WithError'));
+    expect(hasErrors(state, 'WithError')).toBe(true);
   });
 
   it('form with fields with null error', () => {
-    assert.isFalse(hasErrors(state, 'NoError'));
+    expect(hasErrors(state, 'NoError')).toBe(false);
   });
 
   it('form with no fields', () => {
-    assert.isFalse(hasErrors(state, 'NoFields'));
+    expect(hasErrors(state, 'NoFields')).toBe(false);
   });
 });

@@ -1,6 +1,5 @@
 import extractPropertyFromState from '../src/extractPropertyFromState';
 import Immutable from 'seamless-immutable';
-import { assert } from 'chai';
 
 describe('extractPropertyFromState()', () => {
   const state = {
@@ -15,29 +14,21 @@ describe('extractPropertyFromState()', () => {
   };
 
   it('extract property from nonexisting form', () => {
-    assert.deepEqual(
-      extractPropertyFromState(state, 'NonexistingForm', 'value'),
-      {}
-    );
+    expect(extractPropertyFromState(state, 'NonexistingForm', 'value'))
+      .toEqual({});
   });
 
   it('extract property from form fields', () => {
-    assert.deepEqual(
-      extractPropertyFromState(state, 'Form1', 'value'),
-      {
-        foo: 'Bar',
-        bar: 'Foo'
-      }
-    );
+    expect(extractPropertyFromState(state, 'Form1', 'value')).toEqual({
+      foo: 'Bar',
+      bar: 'Foo'
+    });
   });
 
   it('extract property from form fields which is sometimes missing', () => {
-    assert.deepEqual(
-      extractPropertyFromState(state, 'Form1', 'missingProp'),
-      {
-        foo: true,
-        bar: null
-      }
-    );
+    expect(extractPropertyFromState(state, 'Form1', 'missingProp')).toEqual({
+      foo: true,
+      bar: null
+    });
   });
 });
