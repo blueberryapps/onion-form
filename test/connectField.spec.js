@@ -4,11 +4,10 @@ import connectField from '../src/connectField';
 import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
-import TestUtils from 'react-addons-test-utils';
 import { createStore } from 'redux';
-import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { TextField, CheckBox } from './mocks';
+import { mount } from 'enzyme';
 
 const initial = {
   fields: {
@@ -27,17 +26,15 @@ const initial = {
   }
 };
 
-global.document = jsdom('<!doctype html><html><body></body></html>');
-global.window = document.defaultView;
-
 describe('connectField()', () => {
   const FirstName = connectField('firstName', { customOverrideProp: 'Overriden props' })(TextField);
   const LastName = connectField('lastName', { customOverrideProp: 'Overriden props' })(TextField);
   const AcceptAgreement = connectField('acceptAgreement', { customOverrideProp: 'Overriden props' })(CheckBox);
 
   function createStubs(customProps = {}, initialState = initial) {
-    const store = createStore((state = { onionForm: initialState }, action) => ({ onionForm: reducer(state.onionForm, action) }));
-    const container = TestUtils.renderIntoDocument(
+    const store = createStore((state = { onionForm: initialState }, action) =>
+      ({ onionForm: reducer(state.onionForm, action) }));
+    const container = mount(
       <ReduxProvider store={store}>
         <Form name="fooForm">
           <FirstName {...customProps} />
@@ -46,49 +43,48 @@ describe('connectField()', () => {
         </Form>
       </ReduxProvider>
     );
+    const fields = container.find(TextField);
 
-    const fields = TestUtils.scryRenderedComponentsWithType(container, TextField);
     return {
       store,
-      textField: fields[0],
-      lastNameField: fields[1],
-      checkBox: TestUtils.findRenderedComponentWithType(container, CheckBox)
+      textField: fields.at(0),
+      lastNameField: fields.at(1),
+      checkBox: container.find(CheckBox)
     };
   }
-
   const { textField, lastNameField, checkBox } = createStubs({});
 
   it('Text Field should have name prop', () => {
-    expect(textField.props.name).toBe('firstName');
+    expect(textField.prop('name')).toBe('firstName');
   });
 
   it('Text Field should have value prop', () => {
-    expect(textField.props.value).toBe('Bar');
+    expect(textField.prop('value')).toBe('Bar');
   });
 
   it('Text Field should have empty value when state has NULL', () => {
-    expect(lastNameField.props.value).toBe('');
+    expect(lastNameField.prop('value')).toBe('');
   });
 
   describe('Custom props', () => {
     it('Text Field should have label prop set', () => {
-      expect(createStubs({ label: 'LabelFoo' }).textField.props.label).toBe('LabelFoo');
+      expect(createStubs({ label: 'LabelFoo' }).textField.prop('label')).toBe('LabelFoo');
     });
 
     it('Text Field should have name overriden', () => {
-      const { textField: { props: { name, value, customProperty } } } = createStubs({ name: 'acceptAgreement' });
+      const { name, value, customProperty } = createStubs({ name: 'acceptAgreement' }).textField.props();
       expect(name).toBe('acceptAgreement');
       expect(value).toBe('');
       expect(customProperty).toBe('Hi Hello From State');
     });
 
     it('Text Field should have onFocus prop set', () => {
-      expect(createStubs({ onFocus: ({ name }) => (`hi from ${name}`) }).textField.props.onFocus())
+      expect(createStubs({ onFocus: ({ name }) => (`hi from ${name}`) }).textField.props().onFocus())
         .toBe('hi from firstName');
     });
 
     it('Text Field should have tooltip prop set', () => {
-      expect(createStubs({ tooltip: 'TooltipFoo' }).textField.props.tooltip)
+      expect(createStubs({ tooltip: 'TooltipFoo' }).textField.prop('tooltip'))
         .toBe('TooltipFoo');
     });
 
@@ -104,46 +100,46 @@ describe('connectField()', () => {
     });
 
     it('Text Field should have hint prop set', () => {
-      expect(createStubs({ hint: 'HintFoo' }).textField.props.hint)
+      expect(createStubs({ hint: 'HintFoo' }).textField.prop('hint'))
         .toBe('HintFoo');
     });
 
     it('Text Field decorated with translate (msg given) should have hint translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.props.hint)
+      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('hint'))
         .toBe('Translated form.fooForm.firstName.hint');
     });
 
     it('Text Field decorated with translate (msg given) should have label translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.props.label)
+      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('label'))
         .toBe('Translated form.fooForm.firstName.label');
     });
 
     it('Text Field decorated with translate (msg given) have tooltip translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.props.tooltip)
+      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('tooltip'))
         .toBe('Translated form.fooForm.firstName.tooltip');
     });
 
     it('Text Field decorated with translate (msg given) should have error translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[1]}` }).textField.props.error)
+      expect(createStubs({ msg: (key) => `Translated ${key[1]}` }).textField.prop('error'))
         .toBe('Translated form.errors.isRequired');
     });
 
     it('Text Field should call onChange prop with {name and value}', () => {
       const onChange = jest.fn();
-      createStubs({ onChange }).textField.props.onChange({ value: 'Bar' });
+      createStubs({ onChange }).textField.props().onChange({ value: 'Bar' });
       expect(onChange).toBeCalledWith({ name: 'firstName', value: 'Bar' });
     });
 
     it('Text Field should call onBlur prop with {name and value}', () => {
       const onBlur = jest.fn();
-      createStubs({ onBlur }).textField.props.onBlur();
+      createStubs({ onBlur }).textField.props().onBlur();
       expect(onBlur).toBeCalledWith({ name: 'firstName' });
     });
   });
 
   it('Text Field should have onChange prop with given value', () => {
     expect(
-      textField.props.onChange({ value: 'Bar' })
+      textField.props().onChange({ value: 'Bar' })
     ).toEqual(
       {
         type: 'SET_ONION_FORM_FIELD_PROPERTY',
@@ -157,7 +153,7 @@ describe('connectField()', () => {
 
   it('CheckBox should have onChange prop with given true value', () => {
     expect(
-      checkBox.props.onChange({ value: true })
+      checkBox.prop('onChange')({ value: true })
     ).toEqual(
       {
         type: 'SET_ONION_FORM_FIELD_PROPERTY',
@@ -171,7 +167,7 @@ describe('connectField()', () => {
 
   it('CheckBox should have onChange prop with given false value', () => {
     expect(
-      checkBox.props.onChange({ value: false })
+      checkBox.prop('onChange')({ value: false })
     ).toEqual(
       {
         type: 'SET_ONION_FORM_FIELD_PROPERTY',
@@ -184,33 +180,33 @@ describe('connectField()', () => {
   });
 
   it('Text Field should have custom properties from state send as props', () => {
-    expect(textField.props.customProperty).toBe('Hi Hello From State First Name');
+    expect(textField.props().customProperty).toBe('Hi Hello From State First Name');
   });
 
   it('Text Field should have custom properties from override props send as props', () => {
-    expect(textField.props.customOverrideProp).toBe('Overriden props');
+    expect(textField.props().customOverrideProp).toBe('Overriden props');
   });
 
   it('Text Field should have onChange prop with given value in target', () => {
-    expect(textField.props.onChange({ target: { value: 'Bar' } }).value)
+    expect(textField.props().onChange({ target: { value: 'Bar' } }).value)
       .toBe('Bar');
   });
 
   it('Text Field should have onChange prop with given checkbox in target', () => {
-    expect(textField.props.onChange({ target: { type: 'checkbox', checked: true } }).value)
+    expect(textField.props().onChange({ target: { type: 'checkbox', checked: true } }).value)
       .toBe(true);
-    expect(textField.props.onChange({ target: { type: 'checkbox', checked: false } }).value)
+    expect(textField.props().onChange({ target: { type: 'checkbox', checked: false } }).value)
       .toBe(false);
   });
 
   it('Text Field should have onChange prop with given value in target', () => {
-    expect(textField.props.onChange({ target: { type: 'radio', value: 'Bar', checked: true } }).value)
+    expect(textField.props().onChange({ target: { type: 'radio', value: 'Bar', checked: true } }).value)
       .toBe('Bar');
   });
 
   it('Text Field should have onBlur prop', () => {
     expect(
-      textField.props.onBlur({ value: 'Bar' })
+      textField.props().onBlur({ value: 'Bar' })
     ).toEqual(
       {
         type: 'SET_ONION_FORM_FIELD_PROPERTY',
@@ -223,25 +219,24 @@ describe('connectField()', () => {
   });
 
   it('Text Field should have onion form name prop', () => {
-    expect(textField.props.onionFormName).toBe('fooForm');
+    expect(textField.prop('onionFormName')).toBe('fooForm');
   });
 
   describe('dynamic default props', () => {
     const DynamicFirstName = connectField('firstName', ({ msg, name }) => ({ label: `${msg('text')} ${name}` }))(TextField);
     const msg = (key) => (`translated.${key}`);
     const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
-    const container = TestUtils.renderIntoDocument(
+    const container = mount(
       <ReduxProvider store={store}>
         <Form name="fooForm">
           <DynamicFirstName msg={msg} name="foo" />
         </Form>
       </ReduxProvider>
     );
-
-    const stub = TestUtils.findRenderedComponentWithType(container, TextField);
+    const stub = container.find(TextField);
 
     it('process dynamic default props and passes computed label prop to TextField', () => {
-      expect(stub.props.label).toBe('translated.text foo');
+      expect(stub.prop('label')).toBe('translated.text foo');
     });
   });
 });
