@@ -3,6 +3,7 @@ import connectField from '../src/connectField';
 import Form from '../src/Form.react';
 import reducer from '../src/reducer';
 import React, { Component } from 'react';
+import RPT from 'prop-types';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { TextField } from './mocks';
@@ -26,10 +27,10 @@ const initial = {
 describe('Form', () => {
   class Passthrough extends Component {
     static contextTypes = {
-      onionFieldRegister: React.PropTypes.func,
-      onionFormName: React.PropTypes.string,
-      onionLiveValidate: React.PropTypes.func,
-      onionOnSubmit: React.PropTypes.func
+      onionFieldRegister: RPT.func,
+      onionFormName: RPT.string,
+      onionLiveValidate: RPT.func,
+      onionOnSubmit: RPT.func
     }
 
     render() {

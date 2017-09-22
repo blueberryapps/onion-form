@@ -63,6 +63,7 @@
     "flow-bin": "^0.46.0",
     "jest": "^21.1.0",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
+    "prop-types": "^15.5.10",
     "react": ">=15.0.0",
     "react-addons-test-utils": ">=0.14.2 || >=15.0.0",
     "react-dom": ">=15.0.0",

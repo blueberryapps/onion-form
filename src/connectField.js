@@ -1,6 +1,7 @@
 import createContextExtractor from './createContextExtractor';
 import createFormActions from './actions';
-import React, { Component, PropTypes as RPT } from 'react';
+import React, { Component } from 'react';
+import RPT from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
