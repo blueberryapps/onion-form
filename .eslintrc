@@ -27,6 +27,7 @@
     "valid-jsdoc": 2
   },
   "globals": {
+    "jest": false,
     "after": false,
     "afterEach": false,
     "before": false,

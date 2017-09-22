@@ -4,7 +4,6 @@ import TestUtils from 'react-addons-test-utils';
 import Form from '../src/Form.react';
 import reducer from '../src/reducer';
 import React, { Component } from 'react';
-import sinon from 'sinon';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -44,8 +43,8 @@ describe('Form', () => {
   }
 
   const isRequired = () => (value) => ((!value) ? 'required' : null);
-  const onSubmit = sinon.stub();
-  const onError = sinon.stub();
+  const onSubmit = jest.fn();
+  const onError = jest.fn();
   const validations = {
     firstName: [isRequired()],
     lastName: [isRequired()]
@@ -119,7 +118,7 @@ describe('Form', () => {
     it('should call onSubmit() callback when form valid', () => {
       expect(formWithoutValidations._isValid()).toBe(true);
       expect(formWithoutValidations._submit()).toBe(true);
-      sinon.assert.calledWith(onSubmit, {
+      expect(onSubmit).toHaveBeenCalledWith({
         name: 'OnionForm',
         values: {
           firstName: 'Foo',
@@ -131,7 +130,7 @@ describe('Form', () => {
     it('should call onError() callback when form not valid', () => {
       expect(form._isValid()).toBe(false);
       expect(form._submit()).toBe(false);
-      sinon.assert.calledWith(onError, {
+      expect(onError).toHaveBeenCalledWith({
         name: 'OnionForm',
         errors: {
           firstName: null,

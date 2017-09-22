@@ -4,7 +4,6 @@ import connectField from '../src/connectField';
 import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
-import sinon from 'sinon';
 import TestUtils from 'react-addons-test-utils';
 import { createStore } from 'redux';
 import { jsdom } from 'jsdom';
@@ -130,21 +129,15 @@ describe('connectField()', () => {
     });
 
     it('Text Field should call onChange prop with {name and value}', () => {
-      const onChange = sinon.stub();
+      const onChange = jest.fn();
       createStubs({ onChange }).textField.props.onChange({ value: 'Bar' });
-      sinon.assert.calledWith(
-        onChange,
-        { name: 'firstName', value: 'Bar' }
-      );
+      expect(onChange).toBeCalledWith({ name: 'firstName', value: 'Bar' });
     });
 
     it('Text Field should call onBlur prop with {name and value}', () => {
-      const onBlur = sinon.stub();
+      const onBlur = jest.fn();
       createStubs({ onBlur }).textField.props.onBlur();
-      sinon.assert.calledWith(
-        onBlur,
-        { name: 'firstName' }
-      );
+      expect(onBlur).toBeCalledWith({ name: 'firstName' });
     });
   });
 
