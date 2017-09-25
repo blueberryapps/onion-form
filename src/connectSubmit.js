@@ -1,10 +1,12 @@
+// @flow
+import type React from 'react';
 import createContextExtractor from './createContextExtractor';
 import hasApiErrors from './hasApiErrors';
 import hasErrors from './hasErrors';
 import hasValues from './hasValues';
 import { connect } from 'react-redux';
 
-export default function connectSubmit(Submit) {
+export default function connectSubmit(Submit: React.Element<*>): React.Element<*> {
   return createContextExtractor('Submit')(
     connect(
       (state, { disabled, onionFormName, onionIsValid }) => {

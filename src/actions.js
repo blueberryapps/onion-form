@@ -1,5 +1,5 @@
 /* @flow */
-import type { ActionType, PropertyType, ValueType } from './types';
+import type { ActionType, PropertyType, ValueType, ValuesType } from './types';
 
 export const SET_ONION_FORM_FIELD_PROPERTY = 'SET_ONION_FORM_FIELD_PROPERTY';
 export const SET_ONION_FORM_MULTIPLE_FIELDS = 'SET_ONION_FORM_MULTIPLE_FIELDS';
@@ -15,7 +15,7 @@ export function registerField(form: string, field: string): ActionType {
   };
 }
 
-export function setMultipleFields(form: string, property: PropertyType, values: Array<ValueType>): ActionType {
+export function setMultipleFields(form: string, property: PropertyType, values: ValuesType): ActionType {
   return {
     type: 'SET_ONION_FORM_MULTIPLE_FIELDS',
     form,

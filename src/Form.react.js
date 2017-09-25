@@ -1,20 +1,21 @@
+// @flow weak
 import Immutable from 'seamless-immutable';
 import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
 import React, { Component, PropTypes as RPT } from 'react';
+
 import validateField from './validateField';
 import { clearFormProperty, setMultipleFields, registerField } from './actions';
 
+type Props = {
+  children: React.Element<*> | string | Array<React.Element<*>>,
+  method?: string,
+  name: string,
+  onError?: Function,
+  onSubmit?: Function,
+  validations: Object
+}
 export default class Form extends Component {
-
-  static propTypes = {
-    children: RPT.oneOfType([RPT.node, RPT.string, RPT.arrayOf(RPT.node)]).isRequired,
-    method: RPT.string,
-    name: RPT.string.isRequired,
-    onError: RPT.func,
-    onSubmit: RPT.func,
-    validations: RPT.object
-  }
 
   static contextTypes = {
     onionFormName: RPT.string,
@@ -48,6 +49,7 @@ export default class Form extends Component {
     event.preventDefault();
     return this._submit();
   }
+  props: Props
 
   fields = {}
 

@@ -1,11 +1,13 @@
+// @flow
 import * as actions from './actions';
 import Immutable from 'seamless-immutable';
 
 import { reduceObject } from './helpers';
 
-export const initialState = Immutable({
-  fields: Immutable({}),
-  forms: Immutable({})
+import type { StateType, ActionType, StateTypeObject, FieldsType } from './types';
+
+export const initialState: StateType = Immutable({
+  fields: Immutable({})
 });
 
 export const deafultFieldProperties = Immutable({
@@ -15,17 +17,17 @@ export const deafultFieldProperties = Immutable({
   apiError: null
 });
 
-function reviveFields(fields) {
+function reviveFields(fields: FieldsType): Immutable<FieldsType> {
   return Object.keys(fields).reduce(
-    (acc, field) => acc.set(field, deafultFieldProperties.merge(fields[field])),
+    (acc: Immutable<FieldsType>, field: string): Immutable<FieldsType> => acc.set(field, deafultFieldProperties.merge(fields[field])),
     Immutable({})
   );
 }
 
-function revive(state) {
+function revive(state: StateType) {
   const fields = (state.fields || Immutable({}));
   return Object.keys(fields).reduce(
-    (acc, form) => acc.setIn(['fields', form], reviveFields(fields[form]))
+    (acc: StateType, form: string) => acc.setIn(['fields', form], reviveFields(fields[form]))
     , initialState
   );
 }
@@ -36,8 +38,8 @@ function revive(state) {
  * @param  {Object} action      Flux action
  * @return {Object}             Updated app state
  */
-export default function translationReducer(inputState = initialState, action = {}) {
-  const state = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
+export default function translationReducer(inputState: StateType | StateTypeObject = initialState, action: ActionType): StateType {
+  const state: StateType = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
 
   switch (action.type) {
     case actions.REGISTER_ONION_FORM_FIELD: {
@@ -55,8 +57,9 @@ export default function translationReducer(inputState = initialState, action = {
 
     case actions.SET_ONION_FORM_MULTIPLE_FIELDS: {
       const { form, property, values } = action;
-      return Object.keys(values).reduce(
-        (acc, field) => acc.setIn(['fields', form, field, property], values[field]),
+      const valuesKeys = Object.keys(values);
+      return valuesKeys.reduce(
+        (acc: StateType, field: string): StateType => acc.setIn(['fields', form, field, property], values[field]),
         state
       );
     }

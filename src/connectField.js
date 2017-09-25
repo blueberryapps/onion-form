@@ -1,11 +1,12 @@
+// @flow
 import createContextExtractor from './createContextExtractor';
 import createFormActions from './actions';
 import React, { Component, PropTypes as RPT } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-export default function connectField(fieldName, defaultProps = {}, customValidations = []) {
-  return FieldComponent => {
+export default function connectField(fieldName: string, defaultProps?: Object = {}, customValidations?: Array<*> = []) {
+  return (FieldComponent: Class<React.Component<*, *, *>>) => {
     @connect(
       (state, { onionFormName, name }) => ({
         field: state.onionForm.getIn(['fields', onionFormName, name || fieldName])
