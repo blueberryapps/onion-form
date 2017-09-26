@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import {
   mapValues,
   mapKeys,
@@ -16,7 +15,7 @@ describe('Helpers', () => {
       key1: 'prop1-mapped',
       key2: 'prop2-mapped'
     };
-    assert.deepEqual(mapped, expected);
+    expect(mapped).toEqual(expected);
   });
 
   it('Maps over object keys', () => {
@@ -25,13 +24,12 @@ describe('Helpers', () => {
       'key1-mapped': 'prop1',
       'key2-mapped': 'prop2'
     };
-    assert.deepEqual(mapped, expected);
+    expect(mapped).toEqual(expected);
   });
 
   it('Reduces object', () => {
     const reduced = reduceObject(testObject, (acc, value, key) => [...acc, [key, value]], []);
     const expected = [['key1', 'prop1'], ['key2', 'prop2']];
-
-    assert.deepEqual(reduced, expected);
+    expect(reduced).toEqual(expected);
   });
 });

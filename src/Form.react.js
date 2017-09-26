@@ -1,9 +1,10 @@
 import Immutable from 'seamless-immutable';
 import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
-import React, { Component, PropTypes as RPT } from 'react';
+import React, { Component } from 'react';
 import validateField from './validateField';
 import { clearFormProperty, setMultipleFields, registerField } from './actions';
+import RPT from 'prop-types';
 
 export default class Form extends Component {
 

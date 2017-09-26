@@ -1,43 +1,41 @@
 import * as actions from '../src/actions';
 import reducer, { initialState, deafultFieldProperties } from '../src/reducer';
-import { assert } from 'chai';
 import Immutable from 'seamless-immutable';
 
 describe('reducer()', () => {
   it('should initialize state', () => {
-    assert.deepEqual(
-      reducer(undefined, {}),
-      initialState
-    );
+    expect(reducer(undefined, {})).toEqual(initialState);
   });
 
   it('should revive state with fields as Immutable', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.fields;
-    assert(Immutable.isImmutable(value), 'Should be Immutable');
+    expect(Immutable.isImmutable(value)).toBe(true);
   });
 
   it('should revive state with form as Immutable', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.getIn(['fields', 'registration']);
-    assert(Immutable.isImmutable(value), 'Should be Immutable');
-    assert.deepEqual(Object.keys(state.fields), ['registration']);
+    expect(Immutable.isImmutable(value)).toBe(true);
+    expect(Object.keys(state.fields)).toEqual(['registration']);
   });
 
   it('should revive state with form and field', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    assert.deepEqual(Object.keys(state.getIn(['fields', 'registration'])), ['firstName']);
+    expect(Object.keys(state.getIn(['fields', 'registration'])))
+      .toEqual(['firstName']);
   });
 
   it('should revive and field should have default fields', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    assert.deepEqual(state.getIn(['fields', 'registration', 'firstName']), {
-      apiError: null,
-      value: 'Foo',
-      error: null,
-      liveValidation: false,
-      blured: true
-    });
+    expect(state.getIn(['fields', 'registration', 'firstName']))
+      .toEqual({
+        apiError: null,
+        value: 'Foo',
+        error: null,
+        liveValidation: false,
+        blured: true
+      });
   });
 
   it('should set property for field', () => {
@@ -49,10 +47,8 @@ describe('reducer()', () => {
       value: 'Foo'
     };
 
-    assert.equal(
-      reducer(undefined, action).getIn(['fields', 'registration', 'firstName', 'value']),
-      'Foo'
-    );
+    expect(reducer(undefined, action).getIn(['fields', 'registration', 'firstName', 'value']))
+      .toBe('Foo');
   });
 
   it('should set property for multiple fields', () => {
@@ -63,14 +59,10 @@ describe('reducer()', () => {
       values: { firstName: 'Foo', lastName: 'Bar' }
     };
 
-    assert.equal(
-      reducer(undefined, action).getIn(['fields', 'registration', 'firstName', 'value']),
-      'Foo'
-    );
-    assert.equal(
-      reducer(undefined, action).getIn(['fields', 'registration', 'lastName', 'value']),
-      'Bar'
-    );
+    expect(reducer(undefined, action).getIn(['fields', 'registration', 'firstName', 'value']))
+      .toBe('Foo');
+    expect(reducer(undefined, action).getIn(['fields', 'registration', 'lastName', 'value']))
+      .toBe('Bar');
   });
 
   it('should clear all fields in form', () => {
@@ -99,19 +91,12 @@ describe('reducer()', () => {
       form: 'form1',
     };
 
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form1', 'firstName']),
-      deafultFieldProperties,
-    );
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form1', 'lastName']),
-      deafultFieldProperties,
-    );
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']),
-      'Something realy strange',
-      'Must not affect other forms'
-    );
+    expect(reducer(initState, action).getIn(['fields', 'form1', 'firstName']))
+      .toEqual(deafultFieldProperties);
+    expect(reducer(initState, action).getIn(['fields', 'form1', 'lastName']))
+      .toEqual(deafultFieldProperties);
+    expect(reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']))
+      .toEqual('Something realy strange');
   });
 
   it('should clear property for all fields in form', () => {
@@ -138,21 +123,12 @@ describe('reducer()', () => {
       property: 'apiError'
     };
 
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form1', 'firstName', 'apiError']),
-      null,
-      'Property not cleared :sadface'
-    );
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form1', 'firstName', 'value']),
-      'Foo',
-      'Must not affect other properties'
-    );
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']),
-      'Something realy strange',
-      'Must not affect other forms'
-    );
+    expect(reducer(initState, action).getIn(['fields', 'form1', 'firstName', 'apiError']))
+      .toBe(null);
+    expect(reducer(initState, action).getIn(['fields', 'form1', 'firstName', 'value']))
+      .toBe('Foo');
+    expect(reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']))
+      .toBe('Something realy strange');
   });
 
   it('should not throw error on clearing property for nonexisting form', () => {
@@ -179,10 +155,7 @@ describe('reducer()', () => {
       property: 'apiError'
     };
 
-    assert.equal(
-      reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']),
-      'Something realy strange',
-      'Must not affect other forms'
-    );
+    expect(reducer(initState, action).getIn(['fields', 'form2', 'notClearedField', 'apiError']))
+      .toBe('Something realy strange');
   });
 });

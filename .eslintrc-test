@@ -31,6 +31,7 @@
     "valid-jsdoc": 2
   },
   "globals": {
+    "jest": false,
     "after": false,
     "afterEach": false,
     "before": false,
@@ -39,6 +40,7 @@
     "context": false,
     "describe": false,
     "it": false,
+    "expect": false,
     "module": false,
     "process": false,
     "require": false,

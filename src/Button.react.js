@@ -1,9 +1,10 @@
-import React, { Component, PropTypes as RPT } from 'react';
+import React, { Component } from 'react';
+import RPT from 'prop-types';
 
 export default class Button extends Component {
 
   static propTypes = {
-    children: RPT.object.isRequired,
+    children: RPT.any.isRequired,
     disabled: RPT.bool.isRequired,
     onClick: RPT.func.isRequired,
   }

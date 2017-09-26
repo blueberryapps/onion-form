@@ -4,11 +4,9 @@ import Field, { BasicInput } from '../src/Field.react';
 import Form from '../src/Form.react';
 import React from 'react';
 import reducer from '../src/reducer';
-import TestUtils from 'react-addons-test-utils';
-import { assert } from 'chai';
 import { createStore } from 'redux';
-import { jsdom } from 'jsdom';
 import { Provider as ReduxProvider } from 'react-redux';
+import { mount } from 'enzyme';
 
 const initial = {
   fields: {
@@ -24,49 +22,45 @@ const initial = {
 
 const store = createStore(() => ({ onionForm: reducer(initial) }));
 
-global.document = jsdom('<!doctype html><html><body></body></html>');
-global.window = document.defaultView;
-
 describe('Field', () => {
   function createStub(customProps = {}, Input) {
-    const container = TestUtils.renderIntoDocument(
+    const wrapper = mount(
       <ReduxProvider store={store}>
         <Form name="fooForm">
           <Field name="firstName" {...customProps} />
         </Form>
       </ReduxProvider>
     );
-
-    return TestUtils.findRenderedComponentWithType(container, Input);
+    return wrapper.find(Input);
   }
 
   const stub = createStub({}, BasicInput);
 
   it('input should have name prop', () => {
-    assert.equal(stub.props.name, 'firstName');
+    expect(stub.prop('name')).toBe('firstName');
   });
 
   it('input should have onChange prop', () => {
-    assert.typeOf(stub.props.onChange, 'function');
+    expect(typeof stub.prop('onChange')).toBe('function');
   });
 
   it('input should have value prop', () => {
-    assert.equal(stub.props.value, 'Bar');
+    expect(stub.prop('value')).toBe('Bar');
   });
 
   it('input should have error prop', () => {
-    assert.equal(stub.props.error, 'isRequired');
+    expect(stub.prop('error')).toBe('isRequired');
   });
 
   it('input should have customProperty prop', () => {
-    assert.equal(stub.props.customProperty, 'Hi Hello From State');
+    expect(stub.prop('customProperty')).toBe('Hi Hello From State');
   });
 
   describe('with custom Component', () => {
     const FooInput = () => (<div className="FooInput" />);
 
     it('should render it', () => {
-      const fooContainer = TestUtils.renderIntoDocument(
+      const wrapperFoo = mount(
         <ReduxProvider store={store}>
           <Form name="fooForm">
             <Field name="firstName" component={FooInput} />
@@ -74,8 +68,7 @@ describe('Field', () => {
           </Form>
         </ReduxProvider>
       );
-
-      TestUtils.scryRenderedDOMComponentsWithClass(fooContainer, 'FooInput');
+      expect(wrapperFoo).toMatchSnapshot();
     });
   });
 });

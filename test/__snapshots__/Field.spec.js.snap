@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Field with custom Component should render it 1`] = `
+<Provider
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
+>
+  <Form
+    method="POST"
+    name="fooForm"
+    validations={Object {}}
+  >
+    <form
+      method="POST"
+      onSubmit={[Function]}
+    >
+      <Field
+        component={[Function]}
+        name="firstName"
+      >
+        <FormfirstNameContextExtractor>
+          <FormfirstNameField
+            name="firstName"
+            onionFieldRegister={[Function]}
+            onionFormName="fooForm"
+            onionIsValid={[Function]}
+            onionLiveValidate={[Function]}
+            onionOnSubmit={[Function]}
+          >
+            <Field
+              actions={
+                Object {
+                  "clearForm": [Function],
+                  "clearFormProperty": [Function],
+                  "registerField": [Function],
+                  "setFieldApiError": [Function],
+                  "setFieldError": [Function],
+                  "setFieldLiveValidation": [Function],
+                  "setFieldValue": [Function],
+                  "setFormFieldProperty": [Function],
+                  "setMultipleFields": [Function],
+                }
+              }
+              field={
+                Object {
+                  "apiError": null,
+                  "customProperty": "Hi Hello From State",
+                  "error": "isRequired",
+                  "liveValidation": false,
+                  "value": "Bar",
+                }
+              }
+              name="firstName"
+              onionFieldRegister={[Function]}
+              onionFormName="fooForm"
+              onionIsValid={[Function]}
+              onionLiveValidate={[Function]}
+              onionOnSubmit={[Function]}
+            >
+              <FooInput
+                actions={
+                  Object {
+                    "clearForm": [Function],
+                    "clearFormProperty": [Function],
+                    "registerField": [Function],
+                    "setFieldApiError": [Function],
+                    "setFieldError": [Function],
+                    "setFieldLiveValidation": [Function],
+                    "setFieldValue": [Function],
+                    "setFormFieldProperty": [Function],
+                    "setMultipleFields": [Function],
+                  }
+                }
+                apiError={null}
+                component={[Function]}
+                customProperty="Hi Hello From State"
+                error="isRequired"
+                field={
+                  Object {
+                    "apiError": null,
+                    "customProperty": "Hi Hello From State",
+                    "error": "isRequired",
+                    "liveValidation": false,
+                    "value": "Bar",
+                  }
+                }
+                hint={null}
+                label={null}
+                liveValidation={false}
+                name="firstName"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                onionFieldRegister={[Function]}
+                onionFormName="fooForm"
+                onionIsValid={[Function]}
+                onionLiveValidate={[Function]}
+                onionOnSubmit={[Function]}
+                placeholder={null}
+                tooltip={null}
+                value="Bar"
+              >
+                <div
+                  className="FooInput"
+                />
+              </FooInput>
+            </Field>
+          </FormfirstNameField>
+        </FormfirstNameContextExtractor>
+      </Field>
+      <FooInput>
+        <div
+          className="FooInput"
+        />
+      </FooInput>
+    </form>
+  </Form>
+</Provider>
+`;

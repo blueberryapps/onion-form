@@ -1,14 +1,13 @@
 import * as actions from '../src/actions';
 import connectField from '../src/connectField';
-import TestUtils from 'react-addons-test-utils';
 import Form from '../src/Form.react';
 import reducer from '../src/reducer';
 import React, { Component } from 'react';
-import sinon from 'sinon';
+import RPT from 'prop-types';
 import { createStore } from 'redux';
-import { jsdom } from 'jsdom';
-import { assert } from 'chai';
 import { Provider as ReduxProvider } from 'react-redux';
+import { TextField } from './mocks';
+import { mount } from 'enzyme';
 
 const initial = {
   onionForm: {
@@ -25,18 +24,13 @@ const initial = {
   }
 };
 
-global.document = jsdom('<!doctype html><html><body></body></html>');
-global.window = document.defaultView;
-
-const TextField = (props) => (<input type="text" {...props} />);
-
 describe('Form', () => {
   class Passthrough extends Component {
     static contextTypes = {
-      onionFieldRegister: React.PropTypes.func,
-      onionFormName: React.PropTypes.string,
-      onionLiveValidate: React.PropTypes.func,
-      onionOnSubmit: React.PropTypes.func
+      onionFieldRegister: RPT.func,
+      onionFormName: RPT.string,
+      onionLiveValidate: RPT.func,
+      onionOnSubmit: RPT.func
     }
 
     render() {
@@ -45,8 +39,8 @@ describe('Form', () => {
   }
 
   const isRequired = () => (value) => ((!value) ? 'required' : null);
-  const onSubmit = sinon.stub();
-  const onError = sinon.stub();
+  const onSubmit = jest.fn();
+  const onError = jest.fn();
   const validations = {
     firstName: [isRequired()],
     lastName: [isRequired()]
@@ -54,7 +48,7 @@ describe('Form', () => {
 
   const createContainer = (validations) => {
     const store = createStore((state, action) => ({ onionForm: reducer(state.onionForm, action) }), initial);
-    return TestUtils.renderIntoDocument(
+    return mount(
       <ReduxProvider store={store}>
         <Form name="OnionForm" validations={validations} onSubmit={onSubmit} onError={onError}>
           <Passthrough />
@@ -64,63 +58,63 @@ describe('Form', () => {
   };
 
   const container = createContainer(validations);
-  const passthrough = TestUtils.findRenderedComponentWithType(container, Passthrough);
-  const form = TestUtils.findRenderedComponentWithType(container, Form);
+  const form = container.find(Form).getNode();
+  const passthrough = container.find(Passthrough).getNode();
   const passthroughCtx = passthrough.context;
 
   it('should pass onionFormName in context to children', () => {
-    assert.equal(passthroughCtx.onionFormName, 'OnionForm');
+    expect(passthroughCtx.onionFormName).toBe('OnionForm');
   });
 
   it('should pass onionLiveValidate in context to children', () => {
-    assert.typeOf(passthroughCtx.onionLiveValidate, 'function');
+    expect(typeof passthroughCtx.onionLiveValidate).toBe('function');
   });
 
   it('should pass onionLiveValidate in context to children', () => {
-    assert.typeOf(passthroughCtx.onionLiveValidate, 'function');
+    expect(typeof passthroughCtx.onionLiveValidate).toBe('function');
   });
 
   it('should pass onionOnSubmit in context to children', () => {
-    assert.typeOf(passthroughCtx.onionOnSubmit, 'function');
+    expect(typeof passthroughCtx.onionOnSubmit).toBe('function');
   });
 
   it('should pass onionFieldRegister in context to children', () => {
-    assert.typeOf(passthroughCtx.onionFieldRegister, 'function');
+    expect(typeof passthroughCtx.onionFieldRegister).toBe('function');
   });
 
   it('should have validate()', () => {
-    assert.typeOf(form.validate, 'function');
+    expect(typeof form.validate).toBe('function');
   });
 
   it('should have onSubmit()', () => {
-    assert.typeOf(form.onSubmit, 'function');
+    expect(typeof form.onSubmit).toBe('function');
   });
 
   it('should have liveValidate()', () => {
-    assert.typeOf(form.liveValidate, 'function');
+    expect(typeof form.liveValidate).toBe('function');
   });
 
   it('should have formValidate()', () => {
-    assert.typeOf(form.formValidate, 'function');
+    expect(typeof form.formValidate).toBe('function');
   });
 
   it('should have fieldRegister()', () => {
-    assert.typeOf(form.fieldRegister, 'function');
+    expect(typeof form.fieldRegister).toBe('function');
   });
 
   it('should dispatch right action on formValidate()', () => {
-    assert.equal(form.formValidate().type, actions.SET_ONION_FORM_MULTIPLE_FIELDS);
-    assert.equal(form.formValidate().property, 'error');
+    expect(form.formValidate().type).toBe(actions.SET_ONION_FORM_MULTIPLE_FIELDS);
+    expect(form.formValidate().property).toBe('error');
   });
 
   describe('_submit()', () => {
     const containerWithoutValidations = createContainer({});
-    const formWithoutValidations = TestUtils.findRenderedComponentWithType(containerWithoutValidations, Form);
+    const formWithoutValidations = containerWithoutValidations.find(Form).getNode();
 
     it('should call onSubmit() callback when form valid', () => {
-      assert(formWithoutValidations._isValid(), 'Form should be valid');
-      assert(formWithoutValidations._submit(), 'Form should be submitted');
-      sinon.assert.calledWith(onSubmit, {
+      expect(formWithoutValidations._isValid()).toBe(true);
+      expect(formWithoutValidations._submit()).toBe(true);
+      expect(onSubmit).toHaveBeenCalledWith({
         name: 'OnionForm',
         values: {
           firstName: 'Foo',
@@ -130,9 +124,9 @@ describe('Form', () => {
     });
 
     it('should call onError() callback when form not valid', () => {
-      assert(!form._isValid(), 'Form should not be valid');
-      assert(!form._submit(), 'Form should not be submitted');
-      sinon.assert.calledWith(onError, {
+      expect(form._isValid()).toBe(false);
+      expect(form._submit()).toBe(false);
+      expect(onError).toHaveBeenCalledWith({
         name: 'OnionForm',
         errors: {
           firstName: null,
@@ -144,7 +138,7 @@ describe('Form', () => {
 
   describe('formValidate()', () => {
     it('should validate fields', () => {
-      assert.deepEqual(form.formValidate().values, {
+      expect(form.formValidate().values).toEqual({
         firstName: null,
         lastName: 'required'
       });
@@ -159,35 +153,35 @@ describe('Form', () => {
 
     const createForm = (fields, formValidations) => {
       const store = createStore((state, action) => ({ onionForm: reducer(state.onionForm, action) }), initial);
-      const container = TestUtils.renderIntoDocument(
+      const wrapper = mount(
         <ReduxProvider store={store}>
           <Form name="OnionForm" onSubmit={onSubmit} onError={onError} validations={formValidations}>
             {fields}
           </Form>
         </ReduxProvider>
       );
-      return TestUtils.findRenderedComponentWithType(container, Form);
+      return wrapper.find(Form).getNode();
     };
 
     it('should pass for valid fields', () => {
       const form = createForm(<FirstName />);
-      assert(form._isValid(), 'Form should be valid');
+      expect(form._isValid()).toBe(true);
     });
 
     it('should fail for invalid fields', () => {
       const form = createForm(<FirstName validations={[failingValidation]} />);
-      assert(!form._isValid(), 'Form should not be valid');
+      expect(form._isValid()).toBe(false);
     });
 
     it('should fail for invalid fields', () => {
       const form = createForm(<LastName />);
-      assert(!form._isValid(), 'Form should not be valid');
+      expect(form._isValid()).toBe(false);
     });
 
     it('all three types of validations should be used', () => {
       const form = createForm(<LastName validations={[passingValidation]} />, { lastName: [failingValidation] });
       const errors = form._extractValidationsFromField('lastName');
-      assert.equal(Object.keys(errors).length, 3);
+      expect(Object.keys(errors).length).toBe(3);
     });
   });
 });

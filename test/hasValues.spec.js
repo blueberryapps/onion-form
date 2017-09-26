@@ -1,5 +1,4 @@
 import hasValues from '../src/hasValues';
-import { assert } from 'chai';
 import Immutable from 'seamless-immutable';
 
 describe('hasValues()', () => {
@@ -20,14 +19,14 @@ describe('hasValues()', () => {
   };
 
   it('form with at least one field with value', () => {
-    assert.isTrue(hasValues(state, 'WithValue'));
+    expect(hasValues(state, 'WithValue')).toBe(true);
   });
 
   it('form with fields with null value', () => {
-    assert.isFalse(hasValues(state, 'NoValue'));
+    expect(hasValues(state, 'NoValue')).toBe(false);
   });
 
   it('form with no fields', () => {
-    assert.isFalse(hasValues(state, 'NoFields'));
+    expect(hasValues(state, 'NoFields')).toBe(false);
   });
 });

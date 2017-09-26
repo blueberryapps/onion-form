@@ -1,10 +1,11 @@
 import connectField from './connectField';
-import React, { Component, PropTypes as RPT } from 'react';
+import React, { Component } from 'react';
+import RPT from 'prop-types';
 
 export default class Field extends Component {
 
   static propTypes = {
-    component: RPT.object,
+    component: RPT.any,
     name: RPT.string.isRequired
   }
 
@@ -19,16 +20,22 @@ export default class Field extends Component {
 export class BasicInput extends Component { // eslint-disable-line
   static propTypes = {
     error: RPT.string,
-    label: RPT.string
+    label: RPT.string,
+    name: RPT.string,
+    value: RPT.string,
+    placeholder: RPT.string,
+    onBlur: RPT.func,
+    onChange: RPT.func,
+    onFocus: RPT.func
   }
 
   render() {
-    const { label, error } = this.props;
+    const { label, error, name, value, placeholder, onBlur, onChange, onFocus } = this.props;
 
     return (
       <div>
         {label && <label>{label}</label>}
-        <input type="text" {...this.props} />
+        <input type="text" {...{ name, value, placeholder, onBlur, onChange, onFocus }} />
         {error && <div className="error">{error}</div>}
       </div>
     );
