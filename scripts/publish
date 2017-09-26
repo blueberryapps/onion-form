@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+IFS=$'\n\t'
+
+if ! [ "$CIRCLE_BRANCH" = "master" ]; then
+  echo "Skipping 'publish' step, because not running on 'master' branch."
+  exit 0
+fi
+
+function packageJsonName() {
+  echo $(grep -m1 name "$1/package.json" | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+}
+
+function packageJsonVersion() {
+  echo $(grep -m1 version "$1/package.json" | awk -F: '{ print $2 }' | sed 's/[", ]//g')
+}
+
+function notify() {
+  curl -H "Content-Type: application/json" \
+       -X POST \
+       -d "{\"text\":\"A new version *$2* of *$1* package has been just published. <https://www.npmjs.com/package/vcr.js>\",\"username\":\"circle-ci\",\"icon_emoji\":\":tada:\"}" \
+       $SLACK_WEBHOOK_URL
+}
+
+packageDir="."
+tempLog=$(mktemp)
+package=$(packageJsonName $packageDir)
+packageVersion=$(packageJsonVersion $packageDir)
+
+# suppress (token is not printed)
+npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN > /dev/null 2>&1
+npm publish > ${tempLog} 2>&1
+
+if [ $? -eq 0 ]; then
+  echo ">> Package '$package@$packageVersion' has been successfully published!"
+  notify $package $packageVersion
+else
+  # npm publish action is idempotent
+  grep -q "npm ERR! code E403" ${tempLog}
+  grepStatus=$?
+
+  if [ $grepStatus -eq 0 ]; then
+    echo "Package '$package@$packageVersion' is already published."
+  else
+    cat ${tempLog}
+    exit 1
+  fi
+
+  rm -f ${tempLog}
+fi
+
+rm -f ${tempLog}
