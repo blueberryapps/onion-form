@@ -9,7 +9,7 @@ export const initialState = Immutable({
 });
 
 export const deafultFieldProperties = Immutable({
-  value: '',
+  value: undefined,
   liveValidation: false,
   error: null,
   apiError: null
