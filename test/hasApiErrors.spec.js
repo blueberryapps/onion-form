@@ -1,9 +1,9 @@
 import hasApiErrors from '../src/hasApiErrors';
-import Immutable from 'seamless-immutable';
+import { fromJS } from 'immutable';
 
 describe('hasApiErrors()', () => {
   const state = {
-    onionForm: Immutable({
+    onionForm: fromJS({
       fields: {
         WithError: {
           foo: { apiError: 'required' },

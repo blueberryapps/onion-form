@@ -1,14 +1,14 @@
 import * as actions from './actions';
-import Immutable from 'seamless-immutable';
+import { Record, Map } from 'immutable';
 
-import { reduceObject } from './helpers';
-
-export const initialState = Immutable({
-  fields: Immutable({}),
-  forms: Immutable({})
+export const InitialState = Record({
+  fields: new Map(),
+  forms: new Map()
 });
 
-export const deafultFieldProperties = Immutable({
+const initialState = new InitialState;
+
+export const deafultFieldProperties = Map({
   value: '',
   liveValidation: false,
   error: null,
@@ -18,12 +18,12 @@ export const deafultFieldProperties = Immutable({
 function reviveFields(fields) {
   return Object.keys(fields).reduce(
     (acc, field) => acc.set(field, deafultFieldProperties.merge(fields[field])),
-    Immutable({})
+    new Map
   );
 }
 
 function revive(state) {
-  const fields = (state.fields || Immutable({}));
+  const fields = (state.fields || {});
   return Object.keys(fields).reduce(
     (acc, form) => acc.setIn(['fields', form], reviveFields(fields[form]))
     , initialState
@@ -37,12 +37,12 @@ function revive(state) {
  * @return {Object}             Updated app state
  */
 export default function translationReducer(inputState = initialState, action = {}) {
-  const state = !(Immutable.isImmutable(inputState)) ? revive(inputState) : inputState;
+  const state = !(inputState instanceof InitialState) ? revive(inputState) : inputState;
 
   switch (action.type) {
     case actions.REGISTER_ONION_FORM_FIELD: {
       const { form, field } = action;
-      if (state.getIn(['fields', form, field])) {
+      if (Map.isMap(state.getIn(['fields', form, field]))) {
         return state;
       }
       return state.setIn(['fields', form, field], deafultFieldProperties);
@@ -64,7 +64,7 @@ export default function translationReducer(inputState = initialState, action = {
     case actions.CLEAR_ONION_FORM: {
       const { form } = action;
       const fields = state.getIn(['fields', form]) || [];
-      return reduceObject(fields,
+      return fields.reduce(
         (acc, _, field) => acc.setIn(['fields', form, field], deafultFieldProperties),
         state
       );
@@ -73,7 +73,7 @@ export default function translationReducer(inputState = initialState, action = {
     case actions.CLEAR_ONION_FORM_PROPERTY: {
       const { form, property } = action;
       const fields = state.getIn(['fields', form]) || [];
-      return reduceObject(fields,
+      return fields.reduce(
         (acc, _, field) => acc.setIn(['fields', form, field, property], null),
         state
       );
