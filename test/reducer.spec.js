@@ -1,6 +1,5 @@
 import * as actions from '../src/actions';
 import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
-import { assert } from 'chai';
 import { Map } from 'immutable';
 
 const initialState = new InitialState;
@@ -13,25 +12,25 @@ describe('reducer()', () => {
   it('should revive state with fields as map', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.get('fields');
-    assert(Map.isMap(value), `Should be map but is ${typeof value}`);
+    expect(Map.isMap(value)).toBeTruthy();
   });
 
   it('should revive state with form as map', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.getIn(['fields', 'registration']);
-    assert(Map.isMap(value), `Should be map but is ${typeof value}`);
-    assert.deepEqual(Object.keys(state.get('fields').toJS()), ['registration']);
+    expect(Map.isMap(value)).toBeTruthy();
+    expect(Object.keys(state.get('fields').toJS())).toEqual(['registration']);
   });
 
   it('should revive state with form and field', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    assert.deepEqual(Object.keys(state.getIn(['fields', 'registration']).toJS()), ['firstName']);
+    expect(Object.keys(state.getIn(['fields', 'registration']).toJS())).toEqual(['firstName']);
   });
 
   it('should revive and field should have default fields', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
 
-    assert.deepEqual(state.getIn(['fields', 'registration', 'firstName']).toJS(), {
+    expect(state.getIn(['fields', 'registration', 'firstName']).toJS()).toEqual({
       apiError: null,
       value: 'Foo',
       error: null,

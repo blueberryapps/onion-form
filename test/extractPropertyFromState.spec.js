@@ -1,5 +1,4 @@
 import extractPropertyFromState from '../src/extractPropertyFromState';
-import { assert } from 'chai';
 import { fromJS } from 'immutable';
 
 describe('extractPropertyFromState()', () => {
