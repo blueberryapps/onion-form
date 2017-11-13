@@ -58,8 +58,8 @@ describe('Form', () => {
   };
 
   const container = createContainer(validations);
-  const form = container.find(Form).getNode();
-  const passthrough = container.find(Passthrough).getNode();
+  const form = container.find(Form).instance();
+  const passthrough = container.find(Passthrough).instance();
   const passthroughCtx = passthrough.context;
 
   it('should pass onionFormName in context to children', () => {
@@ -109,7 +109,7 @@ describe('Form', () => {
 
   describe('_submit()', () => {
     const containerWithoutValidations = createContainer({});
-    const formWithoutValidations = containerWithoutValidations.find(Form).getNode();
+    const formWithoutValidations = containerWithoutValidations.find(Form).instance();
 
     it('should call onSubmit() callback when form valid', () => {
       expect(formWithoutValidations._isValid()).toBe(true);
@@ -160,7 +160,7 @@ describe('Form', () => {
           </Form>
         </ReduxProvider>
       );
-      return wrapper.find(Form).getNode();
+      return wrapper.find(Form).instance();
     };
 
     it('should pass for valid fields', () => {

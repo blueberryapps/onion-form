@@ -1,41 +1,42 @@
 import * as actions from '../src/actions';
-import reducer, { initialState, deafultFieldProperties } from '../src/reducer';
-import Immutable from 'seamless-immutable';
+import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
+import { Map } from 'immutable';
+
+const initialState = new InitialState;
 
 describe('reducer()', () => {
   it('should initialize state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
-  it('should revive state with fields as Immutable', () => {
+  it('should revive state with fields as map', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    const value = state.fields;
-    expect(Immutable.isImmutable(value)).toBe(true);
+    const value = state.get('fields');
+    expect(Map.isMap(value)).toBeTruthy();
   });
 
-  it('should revive state with form as Immutable', () => {
+  it('should revive state with form as map', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
     const value = state.getIn(['fields', 'registration']);
-    expect(Immutable.isImmutable(value)).toBe(true);
-    expect(Object.keys(state.fields)).toEqual(['registration']);
+    expect(Map.isMap(value)).toBeTruthy();
+    expect(Object.keys(state.get('fields').toJS())).toEqual(['registration']);
   });
 
   it('should revive state with form and field', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    expect(Object.keys(state.getIn(['fields', 'registration'])))
-      .toEqual(['firstName']);
+    expect(Object.keys(state.getIn(['fields', 'registration']).toJS())).toEqual(['firstName']);
   });
 
   it('should revive and field should have default fields', () => {
     const state = reducer({ fields: { registration: { firstName: { value: 'Foo', blured: true } } } }, {});
-    expect(state.getIn(['fields', 'registration', 'firstName']))
-      .toEqual({
-        apiError: null,
-        value: 'Foo',
-        error: null,
-        liveValidation: false,
-        blured: true
-      });
+
+    expect(state.getIn(['fields', 'registration', 'firstName']).toJS()).toEqual({
+      apiError: null,
+      value: 'Foo',
+      error: null,
+      liveValidation: false,
+      blured: true
+    });
   });
 
   it('should set property for field', () => {

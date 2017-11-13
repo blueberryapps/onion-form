@@ -1,10 +1,8 @@
-import { reduceObject } from './helpers';
-
 export default function extractPropertyFromFields(fields, property) {
-  return reduceObject(fields || {},
+  return (fields || []).reduce(
     (acc, properties, field) => ({
       ...acc,
-      [field]: properties && properties[property] || null
+      [field]: properties && properties.get(property) || null
     }),
     {}
   );

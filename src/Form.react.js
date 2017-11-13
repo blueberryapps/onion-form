@@ -1,8 +1,8 @@
-import Immutable from 'seamless-immutable';
 import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
 import React, { Component } from 'react';
 import validateField from './validateField';
+import { Map } from 'immutable';
 import { clearFormProperty, setMultipleFields, registerField } from './actions';
 import RPT from 'prop-types';
 
@@ -77,7 +77,7 @@ export default class Form extends Component {
       this.fields[fieldName] = field;
 
       // Try if field has already data in store
-      if (Immutable.isImmutable(getState().onionForm.getIn(['fields', name, fieldName]))) {
+      if (Map.isMap(getState().onionForm.getIn(['fields', name, fieldName]))) {
         // Lets try to validate it!
         const errors = this._getValidationErrors(this._allFieldNames());
         if (!this.hasAnyError(errors)) {

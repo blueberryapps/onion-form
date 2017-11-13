@@ -1,10 +1,11 @@
 import extractPropertyFromFields from '../src/extractPropertyFromFields';
+import { fromJS } from 'immutable';
 
 describe('extractPropertyFromFields()', () => {
-  const fields = {
+  const fields = fromJS({
     foo: { value: 'Bar', missingProp: true },
     bar: { value: 'Foo', }
-  };
+  });
 
   it('extract property from null fields', () => {
     expect(extractPropertyFromFields(null, 'value')).toEqual({});

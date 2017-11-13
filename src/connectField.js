@@ -103,7 +103,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
 
       getFieldProps(props = this.props) {
         const { field } = props;
-        return field || {};
+        return field ? field.toJS() : {};
       }
 
       validations() {

@@ -49,12 +49,12 @@ exports[`Field with custom Component should render it 1`] = `
                 }
               }
               field={
-                Object {
+                Immutable.Map {
+                  "value": "Bar",
+                  "liveValidation": false,
+                  "error": "isRequired",
                   "apiError": null,
                   "customProperty": "Hi Hello From State",
-                  "error": "isRequired",
-                  "liveValidation": false,
-                  "value": "Bar",
                 }
               }
               name="firstName"
@@ -83,12 +83,12 @@ exports[`Field with custom Component should render it 1`] = `
                 customProperty="Hi Hello From State"
                 error="isRequired"
                 field={
-                  Object {
+                  Immutable.Map {
+                    "value": "Bar",
+                    "liveValidation": false,
+                    "error": "isRequired",
                     "apiError": null,
                     "customProperty": "Hi Hello From State",
-                    "error": "isRequired",
-                    "liveValidation": false,
-                    "value": "Bar",
                   }
                 }
                 hint={null}
