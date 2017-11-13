@@ -3,8 +3,8 @@
 
 
 "@types/node@*":
-  version "8.0.50"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.50.tgz#dc545448e128c88c4eec7cd64025fcc3b7604541"
+  version "8.0.51"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.51.tgz#b31d716fb8d58eeb95c068a039b9b6292817d5fb"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -34,7 +34,7 @@ acorn@^4.0.4:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
 
-acorn@^5.1.1:
+acorn@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.2.1.tgz#317ac7821826c22c702d66189ab8359675f135d7"
 
@@ -1724,10 +1724,10 @@ eslint@^3.2.2:
     user-home "^2.0.0"
 
 espree@^3.4.0:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/espree/-/espree-3.5.1.tgz#0c988b8ab46db53100a1954ae4ba995ddd27d87e"
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-3.5.2.tgz#756ada8b979e9dcfcdb30aad8d1a9304a905e1ca"
   dependencies:
-    acorn "^5.1.1"
+    acorn "^5.2.1"
     acorn-jsx "^3.0.0"
 
 esprima@^3.1.3:
@@ -1959,19 +1959,19 @@ form-data@~2.3.1:
     mime-types "^2.1.12"
 
 fs-readdir-recursive@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.0.0.tgz#8cd1745c8b4f8a29c8caec392476921ba195f560"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.1.0.tgz#e32fc030a2ccee44a6b5371308da54be0b397d27"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
 fsevents@^1.0.0, fsevents@^1.1.1:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.1.2.tgz#3282b713fb3ad80ede0e9fcf4611b5aa6fc033f4"
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.1.3.tgz#11f82318f5fe7bb2cd22965a108e9306208216d8"
   dependencies:
     nan "^2.3.0"
-    node-pre-gyp "^0.6.36"
+    node-pre-gyp "^0.6.39"
 
 fstream-ignore@^1.0.5:
   version "1.0.5"
@@ -2768,9 +2768,9 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
-"jsdoc@git+https://github.com/jsdoc3/jsdoc.git":
-  version "3.6.0-dev"
-  resolved "git+https://github.com/jsdoc3/jsdoc.git#b21427343c7294bbf1f14c718a390f3e955e37cb"
+jsdoc@^3.5.5:
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.5.5.tgz#484521b126e81904d632ff83ec9aaa096708fa4d"
   dependencies:
     babylon "7.0.0-beta.19"
     bluebird "~3.5.0"
@@ -2778,8 +2778,6 @@ jsbn@~0.1.0:
     escape-string-regexp "~1.0.5"
     js2xmlparser "~3.0.0"
     klaw "~2.0.0"
-    markdown-it "~8.3.1"
-    markdown-it-named-headers "~0.0.4"
     marked "~0.3.6"
     mkdirp "~0.5.1"
     requizzle "~0.2.1"
@@ -2896,12 +2894,6 @@ levn@^0.3.0, levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
-
-linkify-it@^2.0.0:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-2.0.3.tgz#d94a4648f9b1c179d64fa97291268bdb6ce9434f"
-  dependencies:
-    uc.micro "^1.0.1"
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -3062,29 +3054,9 @@ makeerror@1.0.x:
   dependencies:
     tmpl "1.0.x"
 
-markdown-it-named-headers@~0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/markdown-it-named-headers/-/markdown-it-named-headers-0.0.4.tgz#82efc28324240a6b1e77b9aae501771d5f351c1f"
-  dependencies:
-    string "^3.0.1"
-
-markdown-it@~8.3.1:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.3.2.tgz#df4b86530d17c3bc9beec3b68d770b92ea17ae96"
-  dependencies:
-    argparse "^1.0.7"
-    entities "~1.1.1"
-    linkify-it "^2.0.0"
-    mdurl "^1.0.1"
-    uc.micro "^1.0.3"
-
 marked@~0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
-
-mdurl@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
 
 mem@^1.1.0:
   version "1.1.0"
@@ -3208,7 +3180,7 @@ node-notifier@^5.0.2:
     shellwords "^0.1.0"
     which "^1.2.12"
 
-node-pre-gyp@^0.6.36:
+node-pre-gyp@^0.6.39:
   version "0.6.39"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
   dependencies:
@@ -3617,16 +3589,16 @@ react-addons-test-utils@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
 
-react-dom@>=15.0.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.1.0.tgz#ab6fd2a285096f388aeba51919a573d06c9bdde4"
+react-dom@^16.0.0:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.1.1.tgz#b2e331b6d752faf1a2d31399969399a41d8d45f8"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-redux@>=3:
+react-redux@^5.0.2:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
   dependencies:
@@ -3645,16 +3617,16 @@ react-test-renderer@^15.6.1:
     object-assign "^4.1.0"
 
 react-test-renderer@^16.0.0-0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.1.0.tgz#33a1d3ce896311e0dd1547649b1456ffa7fda415"
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.1.1.tgz#a05184688d564be799f212449262525d1e350537"
   dependencies:
     fbjs "^0.8.16"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react@>=15.0.0:
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.1.0.tgz#1c2bdac3c17fe7ee9282fa35aca6cc36387903e1"
+react@^16.0.0:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.1.1.tgz#d5c4ef795507e3012282dd51261ff9c0e824fe1f"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -3732,7 +3704,7 @@ recursive-readdir@^2.0.0:
   dependencies:
     minimatch "3.0.3"
 
-redux@>=3:
+redux@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   dependencies:
@@ -4090,10 +4062,6 @@ string-width@^2.0.0:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
 
-string@^3.0.1:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/string/-/string-3.3.3.tgz#5ea211cd92d228e184294990a6cc97b366a77cb0"
-
 string_decoder@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
@@ -4271,10 +4239,6 @@ typedarray@^0.0.6:
 ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
-
-uc.micro@^1.0.1, uc.micro@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
 
 uglify-js@^2.6:
   version "2.8.29"
