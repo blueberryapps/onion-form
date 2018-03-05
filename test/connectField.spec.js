@@ -104,6 +104,20 @@ describe('connectField()', () => {
         .toBe('HintFoo');
     });
 
+    it('Checkbox should pass value prop set on connected field without overriding it', () => {
+      assert.equal(
+        createStubs({ value: true }).checkBox.props.value,
+        true
+      );
+    });
+
+    it('Text Field should pass value prop set on connected field without overriding it', () => {
+      assert.equal(
+        createStubs({ value: 'unoverridable' }).textField.props.value,
+        'unoverridable'
+      );
+    });
+
     it('Text Field decorated with translate (msg given) should have hint translated', () => {
       expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('hint'))
         .toBe('Translated form.fooForm.firstName.hint');

@@ -147,13 +147,14 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
 
         const defaultProps = this._resolveDefaultProps();
         const fieldProps = this.getFieldProps();
+        const value = undefined !== rest.value ? rest.value : (fieldProps.value || '');
 
         return (
           <FieldComponent
             {...rest}
             {...defaultProps}
             {...fieldProps}
-            value={fieldProps.value || ''}
+            value={value}
             error={error && this.msg(`errors.${error}`, error) || error}
             hint={hint || defaultProps.hint || this.msg(`${name}.hint`)}
             label={label || defaultProps.label || this.msg(`${name}.label`)}
