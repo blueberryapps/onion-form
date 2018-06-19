@@ -1,5 +1,6 @@
-import hasErrors from '../src/hasErrors';
 import { fromJS } from 'immutable';
+
+import hasErrors from '../src/hasErrors';
 
 describe('hasErrors()', () => {
   const state = {

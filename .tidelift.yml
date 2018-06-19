@@ -1,0 +1,8 @@
+# nomnom is dependent on nearley, dependent on rst-selector-parser, dependent on enzyme,
+# wontfix: https://github.com/kach/nearley/pull/284#issuecomment-326420646
+ci:
+  platform:
+    NPM:
+      nomnom:
+        tests:
+          unmaintained: skip

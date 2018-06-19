@@ -4,6 +4,8 @@ import RPT from 'prop-types';
 export default function createContextExtractor(name) {
   return (Field) => {
     class FormFieldWrapper extends Component {
+      static displayName = `Form${name}ContextExtractor`;
+
       static contextTypes = {
         onionIsValid: RPT.func.isRequired,
         onionFieldRegister: RPT.func.isRequired,
@@ -12,10 +14,10 @@ export default function createContextExtractor(name) {
         onionOnSubmit: RPT.func.isRequired
       }
 
-      static displayName = `Form${name}ContextExtractor`;
-
       render() {
-        const { onionIsValid, onionFormName, onionFieldRegister, onionLiveValidate, onionOnSubmit } = this.context;
+        const {
+          onionIsValid, onionFormName, onionFieldRegister, onionLiveValidate, onionOnSubmit
+        } = this.context;
 
         return (
           <Field

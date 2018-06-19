@@ -1,5 +1,6 @@
-import hasApiErrors from '../src/hasApiErrors';
 import { fromJS } from 'immutable';
+
+import hasApiErrors from '../src/hasApiErrors';
 
 describe('hasApiErrors()', () => {
   const state = {

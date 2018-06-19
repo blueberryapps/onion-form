@@ -1,13 +1,13 @@
 /* eslint-disable react/no-multi-comp */
+import { mount } from 'enzyme';
+import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { createStore } from 'redux';
 
 import connectField from '../src/connectField';
 import Form from '../src/Form.react';
-import React from 'react';
 import reducer from '../src/reducer';
-import { createStore } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
 import { TextField, CheckBox } from './mocks';
-import { mount } from 'enzyme';
 
 const initial = {
   fields: {
@@ -105,22 +105,22 @@ describe('connectField()', () => {
     });
 
     it('Text Field decorated with translate (msg given) should have hint translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('hint'))
+      expect(createStubs({ msg: key => `Translated ${key[0]}` }).textField.prop('hint'))
         .toBe('Translated form.fooForm.firstName.hint');
     });
 
     it('Text Field decorated with translate (msg given) should have label translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('label'))
+      expect(createStubs({ msg: key => `Translated ${key[0]}` }).textField.prop('label'))
         .toBe('Translated form.fooForm.firstName.label');
     });
 
     it('Text Field decorated with translate (msg given) have tooltip translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[0]}` }).textField.prop('tooltip'))
+      expect(createStubs({ msg: key => `Translated ${key[0]}` }).textField.prop('tooltip'))
         .toBe('Translated form.fooForm.firstName.tooltip');
     });
 
     it('Text Field decorated with translate (msg given) should have error translated', () => {
-      expect(createStubs({ msg: (key) => `Translated ${key[1]}` }).textField.prop('error'))
+      expect(createStubs({ msg: key => `Translated ${key[1]}` }).textField.prop('error'))
         .toBe('Translated form.errors.isRequired');
     });
 
@@ -138,45 +138,33 @@ describe('connectField()', () => {
   });
 
   it('Text Field should have onChange prop with given value', () => {
-    expect(
-      textField.props().onChange({ value: 'Bar' })
-    ).toEqual(
-      {
-        type: 'SET_ONION_FORM_FIELD_PROPERTY',
-        form: 'fooForm',
-        field: 'firstName',
-        property: 'value',
-        value: 'Bar'
-      }
-    );
+    expect(textField.props().onChange({ value: 'Bar' })).toEqual({
+      type: 'SET_ONION_FORM_FIELD_PROPERTY',
+      form: 'fooForm',
+      field: 'firstName',
+      property: 'value',
+      value: 'Bar'
+    });
   });
 
   it('CheckBox should have onChange prop with given true value', () => {
-    expect(
-      checkBox.prop('onChange')({ value: true })
-    ).toEqual(
-      {
-        type: 'SET_ONION_FORM_FIELD_PROPERTY',
-        form: 'fooForm',
-        field: 'acceptAgreement',
-        property: 'value',
-        value: true
-      }
-    );
+    expect(checkBox.prop('onChange')({ value: true })).toEqual({
+      type: 'SET_ONION_FORM_FIELD_PROPERTY',
+      form: 'fooForm',
+      field: 'acceptAgreement',
+      property: 'value',
+      value: true
+    });
   });
 
   it('CheckBox should have onChange prop with given false value', () => {
-    expect(
-      checkBox.prop('onChange')({ value: false })
-    ).toEqual(
-      {
-        type: 'SET_ONION_FORM_FIELD_PROPERTY',
-        form: 'fooForm',
-        field: 'acceptAgreement',
-        property: 'value',
-        value: false
-      }
-    );
+    expect(checkBox.prop('onChange')({ value: false })).toEqual({
+      type: 'SET_ONION_FORM_FIELD_PROPERTY',
+      form: 'fooForm',
+      field: 'acceptAgreement',
+      property: 'value',
+      value: false
+    });
   });
 
   it('Text Field should have custom properties from state send as props', () => {
@@ -205,17 +193,13 @@ describe('connectField()', () => {
   });
 
   it('Text Field should have onBlur prop', () => {
-    expect(
-      textField.props().onBlur({ value: 'Bar' })
-    ).toEqual(
-      {
-        type: 'SET_ONION_FORM_FIELD_PROPERTY',
-        form: 'fooForm',
-        field: 'firstName',
-        property: 'liveValidation',
-        value: true
-      }
-    );
+    expect(textField.props().onBlur({ value: 'Bar' })).toEqual({
+      type: 'SET_ONION_FORM_FIELD_PROPERTY',
+      form: 'fooForm',
+      field: 'firstName',
+      property: 'liveValidation',
+      value: true
+    });
   });
 
   it('Text Field should have onion form name prop', () => {
@@ -224,7 +208,7 @@ describe('connectField()', () => {
 
   describe('dynamic default props', () => {
     const DynamicFirstName = connectField('firstName', ({ msg, name }) => ({ label: `${msg('text')} ${name}` }))(TextField);
-    const msg = (key) => (`translated.${key}`);
+    const msg = key => (`translated.${key}`);
     const store = createStore((state = { onionForm: initial }, action) => ({ onionForm: reducer(state.onionForm, action) }));
     const container = mount(
       <ReduxProvider store={store}>

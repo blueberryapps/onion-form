@@ -1,8 +1,9 @@
-import * as actions from '../src/actions';
-import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
 import { Map } from 'immutable';
 
-const initialState = new InitialState;
+import * as actions from '../src/actions';
+import reducer, { InitialState, deafultFieldProperties } from '../src/reducer';
+
+const initialState = new InitialState();
 
 describe('reducer()', () => {
   it('should initialize state', () => {

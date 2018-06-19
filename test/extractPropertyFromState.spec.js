@@ -1,5 +1,6 @@
-import extractPropertyFromState from '../src/extractPropertyFromState';
 import { fromJS } from 'immutable';
+
+import extractPropertyFromState from '../src/extractPropertyFromState';
 
 describe('extractPropertyFromState()', () => {
   const state = {

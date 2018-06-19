@@ -1,13 +1,14 @@
+import { mount } from 'enzyme';
+import RPT from 'prop-types';
+import React, { Component } from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { createStore } from 'redux';
+
 import * as actions from '../src/actions';
 import connectField from '../src/connectField';
 import Form from '../src/Form.react';
 import reducer from '../src/reducer';
-import React, { Component } from 'react';
-import RPT from 'prop-types';
-import { createStore } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
 import { TextField } from './mocks';
-import { mount } from 'enzyme';
 
 const initial = {
   onionForm: {
@@ -38,7 +39,7 @@ describe('Form', () => {
     }
   }
 
-  const isRequired = () => (value) => ((!value) ? 'required' : null);
+  const isRequired = () => value => ((!value) ? 'required' : null);
   const onSubmit = jest.fn();
   const onError = jest.fn();
   const validations = {

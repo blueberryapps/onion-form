@@ -1,12 +1,13 @@
+import RPT from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import createContextExtractor from './createContextExtractor';
 import createFormActions from './actions';
-import React, { Component } from 'react';
-import RPT from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 export default function connectField(fieldName, defaultProps = {}, customValidations = []) {
-  return FieldComponent => {
+  return (FieldComponent) => {
     @connect(
       (state, { onionFormName, name }) => ({
         field: state.onionForm.getIn(['fields', onionFormName, name || fieldName])
@@ -16,6 +17,8 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       })
     )
     class Field extends Component {
+      static displayName = `Form${fieldName}Field`;
+
       static propTypes = {
         actions: RPT.object,
         dispatch: RPT.func,
@@ -40,8 +43,6 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
         name: fieldName
       }
 
-      static displayName = `Form${fieldName}Field`;
-
       componentDidMount() {
         const { name, onionFieldRegister } = this.props;
         onionFieldRegister(name, this);
@@ -63,7 +64,9 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       onBlur() {
-        const { name, field: { liveValidation }, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate } = this.props;
+        const {
+          name, field: { liveValidation }, onBlur, actions: { setFieldLiveValidation }, onionLiveValidate
+        } = this.props;
 
         // if live validation is not already set, set it now
         const result = (!liveValidation) ? setFieldLiveValidation(name, true) : true;
@@ -84,10 +87,17 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       onChange({ value, target }) {
-        const { name, onChange, actions: { setFieldValue }, onionLiveValidate } = this.props;
+        const {
+          name, onChange, actions: { setFieldValue }, onionLiveValidate
+        } = this.props;
 
         // fix checkbox to return value based on checked/unchecked
-        const newValue = typeof value === 'boolean' ? value : (value || target && ((target.type === 'checkbox') ? target.checked : target.value));
+        const newValue =
+          typeof value === 'boolean'
+            ? value
+            : value ||
+              (target &&
+                (target.type === 'checkbox' ? target.checked : target.value));
 
         const result = setFieldValue(name, newValue);
 
@@ -141,7 +151,9 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
       }
 
       render() {
-        const { name, onionFormName, label, tooltip, hint, placeholder, ...rest } = this.props;
+        const {
+          name, onionFormName, label, tooltip, hint, placeholder, ...rest
+        } = this.props;
         const field = this.getFieldProps();
         const error = field.error || field.apiError;
 
@@ -154,7 +166,7 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
             {...defaultProps}
             {...fieldProps}
             value={fieldProps.value || ''}
-            error={error && this.msg(`errors.${error}`, error) || error}
+            error={(error && this.msg(`errors.${error}`, error)) || error}
             hint={hint || defaultProps.hint || this.msg(`${name}.hint`)}
             label={label || defaultProps.label || this.msg(`${name}.label`)}
             placeholder={placeholder || defaultProps.placeholder || this.msg(`${name}.placeholder`)}
@@ -172,3 +184,4 @@ export default function connectField(fieldName, defaultProps = {}, customValidat
     return createContextExtractor(fieldName)(Field);
   };
 }
+

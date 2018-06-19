@@ -10,6 +10,7 @@
     "comma-dangle": 0, // Nobody cares about commas.
     "curly": 0, // Do not mess up code with {} for one-line ifs.
     "default-case": 0, // Required default case is nonsense.
+    "function-paren-newline": 0,
     "import/default": 2,
     "import/export": 2,
     "import/named": 2,
@@ -21,11 +22,13 @@
     "no-confusing-arrow": 1,
     "no-floating-decimal": 0, // .5 is just fine.
     "no-shadow": 0, // Shadowing is a nice language feature.
+    "no-underscore-dangle": 0,
     "no-unused-expressions": 0,
     "no-use-before-define": 0, // Enable to define styles after using them in component.
     "one-var": 0,
     "one-var-declaration-per-line": 0,
     "react/jsx-no-bind": 0, // Enable arrow functions in Props definitions.
+    "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 0, // Enable functions with state.
     "require-jsdoc": 1,
     "valid-jsdoc": 2
