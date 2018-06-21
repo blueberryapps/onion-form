@@ -1,5 +1,6 @@
-import hasValues from '../src/hasValues';
 import { fromJS } from 'immutable';
+
+import hasValues from '../src/hasValues';
 
 describe('hasValues()', () => {
   const state = {

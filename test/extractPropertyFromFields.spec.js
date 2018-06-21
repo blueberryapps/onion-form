@@ -1,5 +1,6 @@
-import extractPropertyFromFields from '../src/extractPropertyFromFields';
 import { fromJS } from 'immutable';
+
+import extractPropertyFromFields from '../src/extractPropertyFromFields';
 
 describe('extractPropertyFromFields()', () => {
   const fields = fromJS({

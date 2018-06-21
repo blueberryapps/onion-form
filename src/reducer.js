@@ -1,12 +1,12 @@
-import * as actions from './actions';
 import { Record, Map } from 'immutable';
+import * as actions from './actions';
 
 export const InitialState = Record({
   fields: new Map(),
   forms: new Map()
 });
 
-const initialState = new InitialState;
+const initialState = new InitialState();
 
 export const deafultFieldProperties = Map({
   value: '',
@@ -18,7 +18,7 @@ export const deafultFieldProperties = Map({
 function reviveFields(fields) {
   return Object.keys(fields).reduce(
     (acc, field) => acc.set(field, deafultFieldProperties.merge(fields[field])),
-    new Map
+    new Map()
   );
 }
 
@@ -49,7 +49,9 @@ export default function translationReducer(inputState = initialState, action = {
     }
 
     case actions.SET_ONION_FORM_FIELD_PROPERTY: {
-      const { form, field, property, value } = action;
+      const {
+        form, field, property, value
+      } = action;
       return state.setIn(['fields', form, field, property], value);
     }
 

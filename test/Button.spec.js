@@ -1,8 +1,8 @@
 /* eslint-disable react/no-multi-comp */
-
-import React from 'react';
-import Button from '../src/Button.react';
 import { shallow } from 'enzyme';
+import React from 'react';
+
+import Button from '../src/Button.react';
 
 describe('Button', () => {
   const wrapper = shallow(<Button disabled onClick={() => {}}>Send</Button>);

@@ -1,5 +1,4 @@
-import * as actions from '../src/actions';
-import createFormActions from '../src/actions';
+import createFormActions, * as actions from '../src/actions';
 
 describe('actions', () => {
   it('setMultipleFields()', () => {

@@ -1,13 +1,15 @@
+import { Map } from 'immutable';
+import RPT from 'prop-types';
+import React, { Component } from 'react';
+
 import extractPropertyFromState from './extractPropertyFromState';
 import hasErrors from './hasErrors';
-import React, { Component } from 'react';
 import validateField from './validateField';
-import { Map } from 'immutable';
 import { clearFormProperty, setMultipleFields, registerField } from './actions';
-import RPT from 'prop-types';
+
+export const hasAnyError = errors => !Object.keys(errors).reduce((acc, error) => acc || errors[error], false);
 
 export default class Form extends Component {
-
   static propTypes = {
     children: RPT.oneOfType([RPT.node, RPT.string, RPT.arrayOf(RPT.node)]).isRequired,
     method: RPT.string,
@@ -80,15 +82,13 @@ export default class Form extends Component {
       if (Map.isMap(getState().onionForm.getIn(['fields', name, fieldName]))) {
         // Lets try to validate it!
         const errors = this._getValidationErrors(this._allFieldNames());
-        if (!this.hasAnyError(errors)) {
+        if (!hasAnyError(errors)) {
           // Save these errors to state just to change it so submit button will refresh
-          dispatch(
-            setMultipleFields(
-              name,
-              'onInitError',
-              errors
-            )
-          );
+          dispatch(setMultipleFields(
+            name,
+            'onInitError',
+            errors
+          ));
         }
       } else {
         // It has no footprint so register it
@@ -108,24 +108,18 @@ export default class Form extends Component {
   isFormValid() {
     const errors = this._getValidationErrors(this._allFieldNames());
 
-    return this.hasAnyError(errors);
-  }
-
-  hasAnyError(errors) {
-    return !Object.keys(errors).reduce((acc, error) => acc || errors[error], false);
+    return hasAnyError(errors);
   }
 
   validate(fieldsToValidate) {
     const { name } = this.props;
     const { store: { dispatch } } = this.context;
 
-    return dispatch(
-      setMultipleFields(
-        name,
-        'error',
-        this._getValidationErrors(fieldsToValidate)
-      )
-    );
+    return dispatch(setMultipleFields(
+      name,
+      'error',
+      this._getValidationErrors(fieldsToValidate)
+    ));
   }
 
   _submit() {
@@ -202,16 +196,14 @@ export default class Form extends Component {
     const { name } = this.props;
     const { store: { dispatch } } = this.context;
 
-    return dispatch(
-      setMultipleFields(
-        name,
-        'liveValidation',
-        this._allFieldNames().reduce( // this will create { field1: true, field2: true, ...}
-          (acc, field) => ({ ...acc, [field]: true }),
-          {}
-        )
+    return dispatch(setMultipleFields(
+      name,
+      'liveValidation',
+      this._allFieldNames().reduce( // this will create { field1: true, field2: true, ...}
+        (acc, field) => ({ ...acc, [field]: true }),
+        {}
       )
-    );
+    ));
   }
 
   _allFieldNames() {

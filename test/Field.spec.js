@@ -1,12 +1,12 @@
 /* eslint-disable react/no-multi-comp */
+import { mount } from 'enzyme';
+import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { createStore } from 'redux';
 
 import Field, { BasicInput } from '../src/Field.react';
 import Form from '../src/Form.react';
-import React from 'react';
 import reducer from '../src/reducer';
-import { createStore } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
-import { mount } from 'enzyme';
 
 const initial = {
   fields: {

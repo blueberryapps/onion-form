@@ -1,9 +1,9 @@
-import connectField from './connectField';
 import React, { Component } from 'react';
 import RPT from 'prop-types';
 
-export default class Field extends Component {
+import connectField from './connectField';
 
+export default class Field extends Component {
   static propTypes = {
     component: RPT.any,
     name: RPT.string.isRequired
@@ -20,22 +20,30 @@ export default class Field extends Component {
 export class BasicInput extends Component { // eslint-disable-line
   static propTypes = {
     error: RPT.string,
+    id: RPT.string,
     label: RPT.string,
     name: RPT.string,
     value: RPT.string,
     placeholder: RPT.string,
     onBlur: RPT.func,
     onChange: RPT.func,
-    onFocus: RPT.func
+    onFocus: RPT.func,
   }
 
   render() {
-    const { label, error, name, value, placeholder, onBlur, onChange, onFocus } = this.props;
+    const {
+      id, label, error, name, value, placeholder, onBlur, onChange, onFocus
+    } = this.props;
 
     return (
       <div>
-        {label && <label>{label}</label>}
-        <input type="text" {...{ name, value, placeholder, onBlur, onChange, onFocus }} />
+        {label && <label htmlFor={id}>{label}</label>}
+        <input
+          type="text"
+          {...{
+            id, name, value, placeholder, onBlur, onChange, onFocus
+          }}
+        />
         {error && <div className="error">{error}</div>}
       </div>
     );

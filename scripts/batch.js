@@ -14,8 +14,11 @@ const packagesPath = path.resolve(__dirname, '../packages');
 fs.readdirSync(packagesPath).map((file) => {
   const testPath = path.join(packagesPath, file);
   if (fs.statSync(testPath).isDirectory()) {
+    // eslint-disable-next-line no-console
     console.log('------------------------------------------------------------');
+    // eslint-disable-next-line no-console
     console.log(testPath);
+    // eslint-disable-next-line no-console
     console.log('------------------------------------------------------------');
     process.chdir(testPath);
     const task = childProcess.spawnSync(

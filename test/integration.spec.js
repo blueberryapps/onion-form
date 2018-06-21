@@ -1,17 +1,17 @@
 /* eslint-disable react/no-multi-comp */
+import { mount } from 'enzyme';
+import React from 'react';
+import { createStore } from 'redux';
+import { Provider as ReduxProvider } from 'react-redux';
+import { TextField, CheckBox } from './mocks';
 
 import connectField from '../src/connectField';
 import connectSubmit from '../src/connectSubmit';
 import Form from '../src/Form.react';
-import React from 'react';
 import reducer from '../src/reducer';
 import Button from '../src/Button.react';
-import { createStore } from 'redux';
-import { Provider as ReduxProvider } from 'react-redux';
-import { TextField, CheckBox } from './mocks';
-import { mount } from 'enzyme';
 
-const isRequired = (value) => ((value && `${value}`.length > 0) ? null : 'required');
+const isRequired = value => ((value && `${value}`.length > 0) ? null : 'required');
 
 const Name = connectField('name', { customOverrideProp: 'Overriden props' })(TextField);
 const Accept = connectField('accept', { customOverrideProp: 'Overriden props' })(CheckBox);
